@@ -1,0 +1,27 @@
+name: "Setup hc-releases"
+author: "HashiCorp"
+description: "Install hc-releases"
+
+branding:
+  color: "gray-dark"
+  icon: "package"
+
+inputs:
+  github-token:
+    description: "GitHub token with release asset access to hc-releases."
+    required: true
+  version:
+    description: "Version of hc-releases to install."
+    required: false
+    default: "0.11.3"
+  version-checksum:
+    description: "Platform and version checksum of hc-releases to verify."
+    required: false
+
+outputs:
+  version:
+    description: "Version of hc-releases installed."
+
+runs:
+  using: "node12"
+  main: "dist/index.js"
