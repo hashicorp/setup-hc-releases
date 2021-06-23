@@ -23,7 +23,7 @@ describe('download release asset', () => {
     test('downloads successfully', async () => {
         const releaseAsset = {
             id: 1,
-            name: "hc-releases_v1.0.0_linux_amd64.zip",
+            name: "hc-releases_1.0.0_linux_amd64.zip",
         };
 
         fs.mkdtemp(path.join(os.tmpdir(), 'setup-hc-releases-'), async (err, directory) => {
@@ -50,7 +50,7 @@ describe('download release asset', () => {
     test('throws error', async () => {
         const releaseAsset = {
             id: 1,
-            name: "hc-releases_v1.0.0_linux_amd64.zip",
+            name: "hc-releases_1.0.0_linux_amd64.zip",
         };
         fs.mkdtemp(path.join(os.tmpdir(), 'setup-hc-releases-'), async (err, directory) => {
             if (err) throw err;
@@ -114,15 +114,15 @@ describe('get release asset', () => {
             assets: [
                 {
                     id: 1,
-                    name: "hc-releases_v1.0.0_darwin_amd64.zip"
+                    name: "hc-releases_1.0.0_darwin_amd64.zip"
                 },
                 {
                     id: 2,
-                    name: "hc-releases_v1.0.0_linux_amd64.zip"
+                    name: "hc-releases_1.0.0_linux_amd64.zip"
                 },
                 {
                     id: 3,
-                    name: "hc-releases_v1.0.0_windows_amd64.zip"
+                    name: "hc-releases_1.0.0_windows_amd64.zip"
                 },
             ],
             id: "1",
@@ -143,15 +143,15 @@ describe('get release asset', () => {
             assets: [
                 {
                     id: 1,
-                    name: "hc-releases_v1.0.0_darwin_amd64.zip"
+                    name: "hc-releases_1.0.0_darwin_amd64.zip"
                 },
                 {
                     id: 2,
-                    name: "hc-releases_v1.0.0_linux_amd64.zip"
+                    name: "hc-releases_1.0.0_linux_amd64.zip"
                 },
                 {
                     id: 3,
-                    name: "hc-releases_v1.0.0_windows_amd64.zip"
+                    name: "hc-releases_1.0.0_windows_amd64.zip"
                 },
             ],
             id: "1",

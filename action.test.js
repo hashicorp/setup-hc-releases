@@ -10,15 +10,15 @@ const mockRelease = {
     assets: [
         {
             id: 1,
-            name: "hc-releases_v0.11.3_darwin_amd64.zip"
+            name: "hc-releases_0.11.3_darwin_amd64.zip"
         },
         {
             id: 2,
-            name: "hc-releases_v0.11.3_linux_amd64.zip"
+            name: "hc-releases_0.11.3_linux_amd64.zip"
         },
         {
             id: 3,
-            name: "hc-releases_v0.11.3_windows_amd64.zip"
+            name: "hc-releases_0.11.3_windows_amd64.zip"
         },
     ],
     id: "1",

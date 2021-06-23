@@ -80,7 +80,7 @@ async function fileSHA256(path) {
 
 async function getReleaseAsset(client, version, goOperatingSystem, goArchitecture) {
     const release = await githubRelease.getByTag(client, gitHubRepositoryOwner, gitHubRepositoryRepo, `v${version}`);
-    const assetName = `${executableName}_v${version}_${goOperatingSystem}_${goArchitecture}.zip`;
+    const assetName = `${executableName}_${version}_${goOperatingSystem}_${goArchitecture}.zip`;
     const asset = release.assets.find((asset) => asset.name === assetName);
 
     if (asset === undefined) {
