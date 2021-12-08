@@ -1,5 +1,7 @@
 const fs = require('fs');
 const path = require('path');
+const core = require('@actions/core');
+const got = require('got');
 // const stream = require('stream');
 // const util = require('util');
 
@@ -7,20 +9,33 @@ const path = require('path');
 
 async function downloadAsset(client, owner, repo, releaseAsset, directory) {
     client.log.info(`Downloading release asset: ${releaseAsset.name}`);
+    client.log.info(`full asset ${JSON.stringify(releaseAsset)}`);
 
     try {
         const downloadPath = path.resolve(directory, releaseAsset.name);
         const file = fs.createWriteStream(downloadPath);
-        const response = await client.rest.repos.getReleaseAsset({
-            headers: {
-                Accept: 'application/octet-stream',
-            },
-            owner: owner,
-            repo: repo,
-            asset_id: releaseAsset.id,
-        });
+        // const response = await client.rest.repos.getReleaseAsset({
+        //     // headers: {
+        //     //     Accept: 'application/octet-stream',
+        //     // },
+        //     owner: owner,
+        //     repo: repo,
+        //     asset_id: releaseAsset.id,
+        // });
 
-        file.write(Buffer.from(response.data));
+        // client.log.info(`full client ${JSON.stringify(response)}`);
+        
+        // Workaround since oktokit asset downloads are broken https://github.com/octokit/core.js/issues/415
+        const githubToken = core.getInput('github-token');
+        const response = await got(releaseAsset.url, {
+                method: 'GET',
+                headers: {
+                    authorization: `token ${githubToken}`,
+                    accept: 'application/octet-stream',
+                },
+            });
+
+        file.write(Buffer.from(response.rawBody));
         file.end();
 
         return downloadPath;
