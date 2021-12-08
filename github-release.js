@@ -9,7 +9,6 @@ const got = require('got');
 
 async function downloadAsset(client, owner, repo, releaseAsset, directory) {
     client.log.info(`Downloading release asset: ${releaseAsset.name}`);
-    client.log.info(`full asset ${JSON.stringify(releaseAsset)}`);
 
     try {
         const downloadPath = path.resolve(directory, releaseAsset.name);
@@ -27,6 +26,11 @@ async function downloadAsset(client, owner, repo, releaseAsset, directory) {
         
         // Workaround since oktokit asset downloads are broken https://github.com/octokit/core.js/issues/415
         const githubToken = core.getInput('github-token');
+
+        if (typeof releaseAsset.url === "undefined") { // template url for tests
+            releaseAsset.url = `https://api.github.com/repos/${owner}/${repo}/releases/assets/${releaseAsset.id}`;
+        }
+        
         const response = await got(releaseAsset.url, {
                 method: 'GET',
                 headers: {
@@ -34,6 +38,10 @@ async function downloadAsset(client, owner, repo, releaseAsset, directory) {
                     accept: 'application/octet-stream',
                 },
             });
+
+        if (response.statusCode === 404) {
+            throw 'Not Found'
+        }
 
         file.write(Buffer.from(response.rawBody));
         file.end();
