@@ -1,6 +1,6 @@
 {
   "name": "setup-hc-releases",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "GitHub Action to install hc-releases",
   "main": "index.js",
   "jest": {
