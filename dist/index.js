@@ -6159,7 +6159,7 @@ function _defineProperty(obj, key, value) {
   return obj;
 }
 
-const VERSION = "3.5.1";
+const VERSION = "3.5.2";
 
 const noop = () => Promise.resolve(); // @ts-ignore
 
@@ -6357,7 +6357,7 @@ function throttling(octokit, octokitOptions = {}) {
       wantRetry,
       retryAfter
     } = await async function () {
-      if (/\babuse\b/i.test(error.message)) {
+      if (/\bsecondary rate\b/i.test(error.message)) {
         // The user has hit the abuse rate limit. (REST and GraphQL)
         // https://docs.github.com/en/rest/overview/resources-in-the-rest-api#abuse-rate-limits
         // The Retry-After header can sometimes be blank when hitting an abuse limit,
@@ -19857,8 +19857,8 @@ const { GitHub, getOctokitOptions } = __nccwpck_require__(3030)
 const { retry } = __nccwpck_require__(6298)
 const { throttling } = __nccwpck_require__(9968)
 
-const abuseLimitRetries = 5
 const rateLimitRetries = 5
+const secondaryRateLimitRetries = 5
 
 module.exports = function client(token) {
     const Octokit = GitHub.plugin(throttling, retry);
@@ -19873,14 +19873,14 @@ module.exports = function client(token) {
 
     options.throttle = {
         onAbuseLimit(retryAfter, options) {
-            core.info(`Abuse limit triggered for request ${options.method} ${options.url} (attempt ${options.request.retryCount}/${abuseLimitRetries})`)
+            core.info(`Secondary rate limit triggered for request ${options.method} ${options.url} (attempt ${options.request.retryCount}/${secondaryRateLimitRetries})`)
 
-            if (options.request.retryCount < abuseLimitRetries) {
+            if (options.request.retryCount < secondaryRateLimitRetries) {
                 core.info(`Retrying after ${retryAfter} seconds`)
                 return true
             }
 
-            core.warning(`Exhausted abuse limit retry count (${abuseLimitRetries}) for ${options.method} ${options.url}`)
+            core.warning(`Exhausted secondary rate limit retry count (${secondaryRateLimitRetries}) for ${options.method} ${options.url}`)
         },
         onRateLimit(retryAfter, options) {
             core.info(`Rate limit triggered for request ${options.method} ${options.url} (attempt ${options.request.retryCount}/${rateLimitRetries})`)
