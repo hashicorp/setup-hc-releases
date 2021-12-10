@@ -111,12 +111,12 @@ describe('action', () => {
     });
   });
 
-  test('retries abuse limit errors', (done) => {
+  test('retries secondary rate limit errors', (done) => {
     const scope = nock('https://api.github.com')
       .get('/repos/hashicorp/hc-releases/releases/tags/v0.11.4')
       .reply(403, {
-        message: "You have triggered an abuse detection mechanism and have been temporarily blocked from content creation. Please retry your request again later.",
-        documentation_url: "https://docs.github.com/rest/overview/resources-in-the-rest-api#abuse-rate-limits"
+        message: "You have exceeded a secondary rate limit and have been temporarily blocked from content creation. Please retry your request again later.",
+        documentation_url: "https://docs.github.com/rest/overview/resources-in-the-rest-api#secondary-rate-limits"
       })
       .get('/repos/hashicorp/hc-releases/releases/tags/v0.11.4')
       .reply(200, mockRelease)
