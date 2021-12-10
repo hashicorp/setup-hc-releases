@@ -1,8 +1,14 @@
-# v1.0.2
+# v1.0.3
 
 NOTES
 
 - Support retries on GitHub secondary rate limiting after rename.
+
+# v1.0.2
+
+NOTES
+
+- Workaround for GitHub Release asset downloads.
 
 # v1.0.1
 
