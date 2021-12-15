@@ -31,7 +31,18 @@ const checksums = {
     },
     'windows': {
       'amd64': '9f1a6292c431100966105b24fe411906fffe11207af3fd7ae4322231cce891f0'
-    }
+    },
+  },
+    '0.11.5': {
+      'darwin': {
+        'amd64': '370536657975e4416da813a1ba5848d39648ddebfdc0b3bb05857d3cf4993015'
+      },
+      'linux': {
+        'amd64': 'aef0b8590c861b08a637737af3bdf27b40fb687657c21ee489832994af834aef'
+      },
+      'windows': {
+        'amd64': '6f754b8dec1433742f1769202283793c4057cfc60c04f2a03fc32bbb68291f69'
+      }
   },
 };
 const executableName = 'hc-releases';
