@@ -185,16 +185,27 @@ const checksums = {
       'amd64': '9f1a6292c431100966105b24fe411906fffe11207af3fd7ae4322231cce891f0'
     },
   },
-    '0.11.5': {
-      'darwin': {
-        'amd64': '370536657975e4416da813a1ba5848d39648ddebfdc0b3bb05857d3cf4993015'
-      },
-      'linux': {
-        'amd64': 'aef0b8590c861b08a637737af3bdf27b40fb687657c21ee489832994af834aef'
-      },
-      'windows': {
-        'amd64': '6f754b8dec1433742f1769202283793c4057cfc60c04f2a03fc32bbb68291f69'
-      }
+  '0.11.5': {
+    'darwin': {
+      'amd64': '370536657975e4416da813a1ba5848d39648ddebfdc0b3bb05857d3cf4993015'
+    },
+    'linux': {
+      'amd64': 'aef0b8590c861b08a637737af3bdf27b40fb687657c21ee489832994af834aef'
+    },
+    'windows': {
+      'amd64': '6f754b8dec1433742f1769202283793c4057cfc60c04f2a03fc32bbb68291f69'
+    }
+  },
+  '0.11.6': {
+    'darwin': {
+      'amd64': 'd2f46767437c7605ce4e8bfc2291f61115e2e4639dacef8aad6f1cc061dfef71'
+    },
+    'linux': {
+      'amd64': 'a66277a7f8e8219aa85fd45dfca82483ed1f4e1be7a4899dbc9251c500dd6553'
+    },
+    'windows': {
+      'amd64': '454e88864a459524f598e9e2b13d12afb3dfbd40691c60b685d59f7c74478f54'
+    }
   },
 };
 const executableName = 'hc-releases';
