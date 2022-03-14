@@ -21,8 +21,8 @@ jobs:
 | Input              | Description                                               | Default                |
 | ------------------ | --------------------------------------------------------- | ---------------------- |
 | `github-token`     | GitHub token with release asset access to `hc-releases`.  |                        |
-| `version`          | Version of `hc-releases` to install.                      | `0.11.6`               |
-| `version-checksum` | Platform and version checksum of `hc-releases` to verify. | Automatic for `0.11.6` |
+| `version`          | Version of `hc-releases` to install.                      | `0.11.7`               |
+| `version-checksum` | Platform and version checksum of `hc-releases` to verify. | Automatic for `0.11.7` |
 
 ### Outputs
 
