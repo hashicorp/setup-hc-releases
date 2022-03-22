@@ -221,12 +221,12 @@ const checksums = {
 };
 const executableName = 'hc-releases';
 const gitHubRepositoryOwner = 'hashicorp';
-const gitHubRepositoryRepo = 'hc-releases';
-const latestVersion = '0.11.4';
+const gitHubRepositoryRepo = 'releases-api';
+const latestVersion = '0.0.7';
 const supportedGoPlatforms = {
-  'darwin': ['amd64'],
+  // 'darwin': ['amd64'],
   'linux': ['amd64'],
-  'windows': ['amd64']
+  // 'windows': ['amd64']
 };
 
 function ensureSupportedGoPlatform(goOperatingSystem, goArchitecture) {

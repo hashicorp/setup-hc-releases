@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # ... potentially other steps ...
-      - uses: hashicorp/setup-hc-releases@v1
+      - uses: hashicorp/setup-hc-releases@v2
         with:
           github-token: ${{ secrets.HC_RELEASES_GITHUB_TOKEN }}
       # ... steps that require hc-releases ...
@@ -21,8 +21,8 @@ jobs:
 | Input              | Description                                               | Default                |
 | ------------------ | --------------------------------------------------------- | ---------------------- |
 | `github-token`     | GitHub token with release asset access to `hc-releases`.  |                        |
-| `version`          | Version of `hc-releases` to install.                      | `0.11.7`               |
-| `version-checksum` | Platform and version checksum of `hc-releases` to verify. | Automatic for `0.11.7` |
+| `version`          | Version of `hc-releases` to install.                      | `0.1.0`               |
+| `version-checksum` | Platform and version checksum of `hc-releases` to verify. | Automatic for `0.1.0` |
 
 ### Outputs
 
