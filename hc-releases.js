@@ -11,12 +11,15 @@ const tc = require('@actions/tool-cache');
 const githubRelease = require('./github-release');
 
 const checksums = {
-  '0.0.7': {
-    // 'darwin': {
-    //   'amd64': '096ba7ee269efd5215a378b9f0f04ade7ada1a8ffda836fd91171ed8a2e8d6e9'
-    // },
+  '0.0.8': {
+    'darwin': {
+      'amd64': '45013e04fa430f67390a746ec3492842127a719510f382e2fbe658899c94e93a'
+    },
+    'darwin': {
+      'arm64': '1a9682d27f691f45fc2261c66758ef60e4726e2297df19f483ca632db46f1af6'
+    },
     'linux': {
-      'amd64': '7c4196db1ef6c9fd6e4f6a019f9fc023f668c94d29219db6ad8eff0e2bd8c045'
+      'amd64': '77337ad7ac48ea71252e5205eab208342731ff596ce8f8b8029c0202c4186feb'
     },
     // 'windows': {
     //   'amd64': '3e7f3e12bb7fc0fadb62e75187eff70c36dfb70b50e29e8b78dbdd78a2ad90ce'
@@ -26,9 +29,10 @@ const checksums = {
 const executableName = 'hc-releases';
 const gitHubRepositoryOwner = 'hashicorp';
 const gitHubRepositoryRepo = 'hc-releases';
-const latestVersion = '0.11.4';
+const latestVersion = '0.0.8';
 const supportedGoPlatforms = {
-  // 'darwin': ['amd64'],
+  'darwin': ['amd64'],
+  'darwin': ['arm64'],
   'linux': ['amd64'],
   // 'windows': ['amd64']
 };
