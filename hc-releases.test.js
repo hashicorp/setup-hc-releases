@@ -33,7 +33,8 @@ describe('download release asset', () => {
 
       nock('https://api.github.com')
         .get('/repos/hashicorp/releases-api/releases/assets/1')
-        .replyWithFile(200, path.resolve(__dirname, 'test.zip'), { 'content-type': 'application/octet-stream' });
+        .replyWithFile(200, path.resolve(__dirname, 'test.zip'), { 'content-type': 'application/octet-stream' })
+        .log(console.log);
 
       const downloadPath = await hcReleases.downloadReleaseAsset(client, releaseAsset, directory);
 
@@ -90,7 +91,7 @@ describe('extract release asset', () => {
     const spy = jest.spyOn(tc, 'extractZip');
     spy.mockReturnValue('/tmp/test');
 
-    const result = await hcReleases.extractReleaseAsset(client, '/tmp/test/test_v0.0.8_linux_amd64.zip');
+    const result = await hcReleases.extractReleaseAsset(client, '/tmp/test/test_v1.0.0_linux_amd64.zip');
 
     await expect(spy).toHaveBeenCalled();
     await expect(result).toEqual('/tmp/test');
@@ -100,7 +101,7 @@ describe('extract release asset', () => {
     const spy = jest.spyOn(tc, 'extractZip');
     spy.mockRejectedValue(new Error('executable not found: zip'))
 
-    await expect(hcReleases.extractReleaseAsset(client, '/tmp/test/test_v0.0.8_linux_amd64.zip')).rejects.toThrow('executable not found');
+    await expect(hcReleases.extractReleaseAsset(client, '/tmp/test/test_v1.0.0_linux_amd64.zip')).rejects.toThrow('executable not found');
     await expect(spy).toHaveBeenCalled();
   });
 });
@@ -123,7 +124,7 @@ describe('get release asset', () => {
           name: "hc-releases_0.0.8_darwin_amd64.zip"
         },
         {
-          id: 2,
+          id: 3,
           name: "hc-releases_0.0.8_darwin_arm64.zip"
         },
         // {
@@ -177,22 +178,21 @@ describe('get release asset', () => {
 
   test('throws release not found error', async () => {
     nock('https://api.github.com')
-      .get(`/repos/hashicorp/releases-api/releases/tags/v4.0.0`)
+      .get(`/repos/hashicorp/releases-api/releases/tags/v0.0.8`)
       .reply(404, 'Not Found');
 
-    await expect(hcReleases.getReleaseAsset(client, '4.0.0', 'linux', 'amd64')).rejects.toThrow('Not Found');
+    await expect(hcReleases.getReleaseAsset(client, '0.0.8', 'linux', 'amd64')).rejects.toThrow('Not Found');
   });
 });
 
 describe('release asset checksum', () => {
   test.each([
-    ['0.0.0', 'darwin', 'amd64', undefined],
-    ['0.11.3', 'unknown', 'amd64', undefined],
-    ['0.11.3', 'darwin', '386', undefined],
+    ['0.0.8', 'unknown', 'amd64', undefined],
+    ['0.0.8', 'darwin', '386', undefined],
+    ['0.0.8', 'darwin', 'arm64', '1a9682d27f691f45fc2261c66758ef60e4726e2297df19f483ca632db46f1af6'],
     ['0.0.8', 'darwin', 'amd64', '1a9682d27f691f45fc2261c66758ef60e4726e2297df19f483ca632db46f1af6'],
-    ['0.11.4', 'linux', 'amd64', '77337ad7ac48ea71252e5205eab208342731ff596ce8f8b8029c0202c4186feb'],
-    ['0.11.4', 'darwin', 'arm64', '1a9682d27f691f45fc2261c66758ef60e4726e2297df19f483ca632db46f1af6'],
-    ['0.11.4', 'windows', 'amd64', undefined],
+    ['0.0.8', 'linux', 'amd64', '77337ad7ac48ea71252e5205eab208342731ff596ce8f8b8029c0202c4186feb'],
+    ['0.0.8', 'windows', 'amd64', undefined],
   ])('%s %s/%s', (version, goOperatingSystem, goArchitecture, expected) => {
     const result = hcReleases.releaseAssetChecksum(version, goOperatingSystem, goArchitecture)
     expect(result).toEqual(expected);
@@ -222,13 +222,13 @@ describe('verify release asset', () => {
       }
     });
 
-    await expect(hcReleases.verifyReleaseAsset(client, '/tmp/test/test_v0.0.8_linux_amd64.zip', 'abc123')).resolve;
+    await expect(hcReleases.verifyReleaseAsset(client, '/tmp/test/test_v1.0.0_linux_amd64.zip', 'abc123')).resolve;
     await expect(spyCreateHash).toHaveBeenCalled();
     await expect(spyCreateReadStream).toHaveBeenCalled();
   });
 
   test('no checksum', async () => {
-    await expect(hcReleases.verifyReleaseAsset(client, '/tmp/test/test_v0.0.8_linux_amd64.zip', undefined)).resolve;
+    await expect(hcReleases.verifyReleaseAsset(client, '/tmp/test/test_v1.0.0_linux_amd64.zip', undefined)).resolve;
   });
 
   test('throws checksum mismatch error', async () => {
@@ -253,7 +253,7 @@ describe('verify release asset', () => {
       };
     });
 
-    await expect(hcReleases.verifyReleaseAsset(client, '/tmp/test/test_v0.0.8_linux_amd64.zip', 'zyx987')).rejects.toThrow('checksum mismatch');
+    await expect(hcReleases.verifyReleaseAsset(client, '/tmp/test/test_v1.0.0_linux_amd64.zip', 'zyx987')).rejects.toThrow('checksum mismatch');
     await expect(spyCreateHash).toHaveBeenCalled();
     await expect(spyCreateReadStream).toHaveBeenCalled();
   });
@@ -300,14 +300,14 @@ describe('version number', () => {
   test('successful', async () => {
     const spy = jest.spyOn(exec, 'exec');
     spy.mockImplementation((commandLine, args, options) => {
-      options.listeners.stdout('hc-releases v0.11.3 ()');
+      options.listeners.stdout('hc-releases v0.0.8 ()');
       Promise.resolve();
     });
 
     const result = await hcReleases.versionNumber();
 
     await expect(spy).toHaveBeenCalled();
-    await expect(result).toEqual('0.11.3');
+    await expect(result).toEqual('0.0.8');
   });
 
   test('throws stderr error', async () => {
