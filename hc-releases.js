@@ -13,17 +13,12 @@ const githubRelease = require('./github-release');
 const checksums = {
   '0.0.8': {
     'darwin': {
-      'amd64': '45013e04fa430f67390a746ec3492842127a719510f382e2fbe658899c94e93a'
-    },
-    'darwin': {
-      'arm64': '1a9682d27f691f45fc2261c66758ef60e4726e2297df19f483ca632db46f1af6'
+      'amd64': '45013e04fa430f67390a746ec3492842127a719510f382e2fbe658899c94e93a',
+      'arm64': '1a9682d27f691f45fc2261c66758ef60e4726e2297df19f483ca632db46f1af6',
     },
     'linux': {
       'amd64': '77337ad7ac48ea71252e5205eab208342731ff596ce8f8b8029c0202c4186feb'
     },
-    // 'windows': {
-    //   'amd64': '3e7f3e12bb7fc0fadb62e75187eff70c36dfb70b50e29e8b78dbdd78a2ad90ce'
-    // }
   },
 };
 const executableName = 'hc-releases';
@@ -31,10 +26,8 @@ const gitHubRepositoryOwner = 'hashicorp';
 const gitHubRepositoryRepo = 'releases-api';
 const latestVersion = '0.0.8';
 const supportedGoPlatforms = {
-  'darwin': ['amd64'],
-  'darwin': ['arm64'],
-  'linux': ['amd64'],
-  // 'windows': ['amd64']
+  'darwin': ['amd64', 'arm64'],
+  'linux': ['amd64']
 };
 
 function ensureSupportedGoPlatform(goOperatingSystem, goArchitecture) {
