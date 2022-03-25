@@ -180,7 +180,7 @@ const checksums = {
 };
 const executableName = 'hc-releases';
 const gitHubRepositoryOwner = 'hashicorp';
-const gitHubRepositoryRepo = 'hc-releases';
+const gitHubRepositoryRepo = 'releases-api';
 const latestVersion = '0.0.8';
 const supportedGoPlatforms = {
   'darwin': ['amd64'],

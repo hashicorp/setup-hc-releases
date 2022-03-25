@@ -50,7 +50,7 @@ describe('download release asset', () => {
   test('throws error', async () => {
     const releaseAsset = {
       id: 1,
-      name: "hc-release_0.0.8_linux_amd64.zip",
+      name: "hc-releases_0.0.8_linux_amd64.zip",
     };
     fs.mkdtemp(path.join(os.tmpdir(), 'setup-hc-releases-'), async (err, directory) => {
       if (err) throw err;
@@ -69,8 +69,9 @@ describe('download release asset', () => {
 describe('ensure supported go platform', () => {
   test.each([
     ['darwin', 'amd64'],
+    ['darwin', 'arm64'],
     ['linux', 'amd64'],
-    ['windows', 'amd64'],
+    // ['windows', 'amd64'],
   ])('%s/%s', (goOperatingSystem, goArchitecture) => {
     expect(hcReleases.ensureSupportedGoPlatform(goOperatingSystem, goArchitecture)).resolves;
   })
@@ -106,8 +107,8 @@ describe('extract release asset', () => {
 
 describe('get release asset', () => {
   test.each([
-    ['darwin', 'amd64'],
     ['linux', 'amd64'],
+    ['darwin', 'amd64'],
     ['darwin', 'arm64'],
     // ['windows', 'amd64'],
   ])('%s/%s', async (goOperatingSystem, goArchitecture) => {
@@ -122,12 +123,12 @@ describe('get release asset', () => {
           name: "hc-releases_0.0.8_darwin_amd64.zip"
         },
         {
-          id: 3,
+          id: 2,
           name: "hc-releases_0.0.8_darwin_arm64.zip"
         },
         // {
         //   id: 4,
-        //   name: "hc-releases_1.0.0_windows_amd64.zip"
+        //   name: "hc-releases_0.0.8_windows_amd64.zip"
         // },
       ],
       id: "1",
@@ -155,12 +156,12 @@ describe('get release asset', () => {
           name: "hc-releases_0.0.8_darwin_amd64.zip"
         },
         {
-          id: 3,
+          id: 2,
           name: "hc-releases_0.0.8_darwin_arm64.zip"
         },
         // {
         //   id: 4,
-        //   name: "hc-releases_1.0.0_windows_amd64.zip"
+        //   name: "hc-releases_0.0.8_windows_amd64.zip"
         // },
       ],
       id: "1",
@@ -176,7 +177,7 @@ describe('get release asset', () => {
 
   test('throws release not found error', async () => {
     nock('https://api.github.com')
-      .get(`/repos/hashicorp/releases-api/releases/tags/v0.0.8`)
+      .get(`/repos/hashicorp/releases-api/releases/tags/v4.0.0`)
       .reply(404, 'Not Found');
 
     await expect(hcReleases.getReleaseAsset(client, '4.0.0', 'linux', 'amd64')).rejects.toThrow('Not Found');
@@ -188,9 +189,9 @@ describe('release asset checksum', () => {
     ['0.0.0', 'darwin', 'amd64', undefined],
     ['0.11.3', 'unknown', 'amd64', undefined],
     ['0.11.3', 'darwin', '386', undefined],
-    ['0.0.8', 'darwin', 'amd64', '45013e04fa430f67390a746ec3492842127a719510f382e2fbe658899c94e93a'],
-    ['0.0.8', 'linux', 'amd64', '77337ad7ac48ea71252e5205eab208342731ff596ce8f8b8029c0202c4186feb'],
-    ['0.0.8', 'linux', 'arm64', '1a9682d27f691f45fc2261c66758ef60e4726e2297df19f483ca632db46f1af6'],
+    ['0.0.8', 'darwin', 'amd64', '1a9682d27f691f45fc2261c66758ef60e4726e2297df19f483ca632db46f1af6'],
+    ['0.11.4', 'linux', 'amd64', '77337ad7ac48ea71252e5205eab208342731ff596ce8f8b8029c0202c4186feb'],
+    ['0.11.4', 'darwin', 'arm64', '1a9682d27f691f45fc2261c66758ef60e4726e2297df19f483ca632db46f1af6'],
     ['0.11.4', 'windows', 'amd64', undefined],
   ])('%s %s/%s', (version, goOperatingSystem, goArchitecture, expected) => {
     const result = hcReleases.releaseAssetChecksum(version, goOperatingSystem, goArchitecture)
@@ -299,14 +300,14 @@ describe('version number', () => {
   test('successful', async () => {
     const spy = jest.spyOn(exec, 'exec');
     spy.mockImplementation((commandLine, args, options) => {
-      options.listeners.stdout('hc-releases v0.0.8 ()');
+      options.listeners.stdout('hc-releases v0.11.3 ()');
       Promise.resolve();
     });
 
     const result = await hcReleases.versionNumber();
 
     await expect(spy).toHaveBeenCalled();
-    await expect(result).toEqual('0.0.8');
+    await expect(result).toEqual('0.11.3');
   });
 
   test('throws stderr error', async () => {
