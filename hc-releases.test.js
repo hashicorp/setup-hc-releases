@@ -33,8 +33,7 @@ describe('download release asset', () => {
 
       nock('https://api.github.com')
         .get('/repos/hashicorp/releases-api/releases/assets/1')
-        .replyWithFile(200, path.resolve(__dirname, 'test.zip'), { 'content-type': 'application/octet-stream' })
-        .log(console.log);
+        .replyWithFile(200, path.resolve(__dirname, 'test.zip'), { 'content-type': 'application/octet-stream' });
 
       const downloadPath = await hcReleases.downloadReleaseAsset(client, releaseAsset, directory);
 
@@ -71,8 +70,7 @@ describe('ensure supported go platform', () => {
   test.each([
     ['darwin', 'amd64'],
     ['darwin', 'arm64'],
-    ['linux', 'amd64'],
-    // ['windows', 'amd64'],
+    ['linux', 'amd64']
   ])('%s/%s', (goOperatingSystem, goArchitecture) => {
     expect(hcReleases.ensureSupportedGoPlatform(goOperatingSystem, goArchitecture)).resolves;
   })
@@ -110,8 +108,7 @@ describe('get release asset', () => {
   test.each([
     ['linux', 'amd64'],
     ['darwin', 'amd64'],
-    ['darwin', 'arm64'],
-    // ['windows', 'amd64'],
+    ['darwin', 'arm64']
   ])('%s/%s', async (goOperatingSystem, goArchitecture) => {
     const mockRelease = {
       assets: [
@@ -127,10 +124,6 @@ describe('get release asset', () => {
           id: 3,
           name: "hc-releases_0.0.8_darwin_arm64.zip"
         },
-        // {
-        //   id: 4,
-        //   name: "hc-releases_0.0.8_windows_amd64.zip"
-        // },
       ],
       id: "1",
       name: "v0.0.8",
@@ -157,13 +150,9 @@ describe('get release asset', () => {
           name: "hc-releases_0.0.8_darwin_amd64.zip"
         },
         {
-          id: 2,
+          id: 3,
           name: "hc-releases_0.0.8_darwin_arm64.zip"
         },
-        // {
-        //   id: 4,
-        //   name: "hc-releases_0.0.8_windows_amd64.zip"
-        // },
       ],
       id: "1",
       name: "v0.0.8",
@@ -190,7 +179,7 @@ describe('release asset checksum', () => {
     ['0.0.8', 'unknown', 'amd64', undefined],
     ['0.0.8', 'darwin', '386', undefined],
     ['0.0.8', 'darwin', 'arm64', '1a9682d27f691f45fc2261c66758ef60e4726e2297df19f483ca632db46f1af6'],
-    ['0.0.8', 'darwin', 'amd64', '1a9682d27f691f45fc2261c66758ef60e4726e2297df19f483ca632db46f1af6'],
+    ['0.0.8', 'darwin', 'amd64', '45013e04fa430f67390a746ec3492842127a719510f382e2fbe658899c94e93a'],
     ['0.0.8', 'linux', 'amd64', '77337ad7ac48ea71252e5205eab208342731ff596ce8f8b8029c0202c4186feb'],
     ['0.0.8', 'windows', 'amd64', undefined],
   ])('%s %s/%s', (version, goOperatingSystem, goArchitecture, expected) => {
