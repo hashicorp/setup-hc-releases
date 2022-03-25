@@ -11,70 +11,23 @@ const tc = require('@actions/tool-cache');
 const githubRelease = require('./github-release');
 
 const checksums = {
-  '0.11.3': {
+  '0.0.8': {
     'darwin': {
-      'amd64': '9c5785b79790efdc665a90b84d8d3c8c5569748f1313d7508fd737fe3db1df89'
+      'amd64': '45013e04fa430f67390a746ec3492842127a719510f382e2fbe658899c94e93a',
+      'arm64': '1a9682d27f691f45fc2261c66758ef60e4726e2297df19f483ca632db46f1af6',
     },
     'linux': {
-      'amd64': '9016ea5f12f267cb5109454e411bb5795d42224463e8e702f3ad0afb8d9b1f0f'
+      'amd64': '77337ad7ac48ea71252e5205eab208342731ff596ce8f8b8029c0202c4186feb'
     },
-    'windows': {
-      'amd64': '9c90ea397bf6fe5a89b0f2f3334bdc0e8058e8d90e735e8e8266f209ddf994cd'
-    }
-  },
-  '0.11.4': {
-    'darwin': {
-      'amd64': 'c8678408e8d5a2ac1c7e24fab29f74fd6e42d545b94fb7f2ed89e39cffbef15b'
-    },
-    'linux': {
-      'amd64': '093fc7848fd8ae673a6359d7851fda991744d51e4b5ee317b327eb03c89df5c4'
-    },
-    'windows': {
-      'amd64': '9f1a6292c431100966105b24fe411906fffe11207af3fd7ae4322231cce891f0'
-    },
-  },
-  '0.11.5': {
-    'darwin': {
-      'amd64': '370536657975e4416da813a1ba5848d39648ddebfdc0b3bb05857d3cf4993015'
-    },
-    'linux': {
-      'amd64': 'aef0b8590c861b08a637737af3bdf27b40fb687657c21ee489832994af834aef'
-    },
-    'windows': {
-      'amd64': '6f754b8dec1433742f1769202283793c4057cfc60c04f2a03fc32bbb68291f69'
-    }
-  },
-  '0.11.6': {
-    'darwin': {
-      'amd64': 'd2f46767437c7605ce4e8bfc2291f61115e2e4639dacef8aad6f1cc061dfef71'
-    },
-    'linux': {
-      'amd64': 'a66277a7f8e8219aa85fd45dfca82483ed1f4e1be7a4899dbc9251c500dd6553'
-    },
-    'windows': {
-      'amd64': '454e88864a459524f598e9e2b13d12afb3dfbd40691c60b685d59f7c74478f54'
-    }
-  },
-  '0.11.7': {
-    'darwin': {
-      'amd64': '096ba7ee269efd5215a378b9f0f04ade7ada1a8ffda836fd91171ed8a2e8d6e9'
-    },
-    'linux': {
-      'amd64': '75add216e9e89e11f2aaeb48bba9c3adaad7a01cdb2469fd900534413b178400'
-    },
-    'windows': {
-      'amd64': '3e7f3e12bb7fc0fadb62e75187eff70c36dfb70b50e29e8b78dbdd78a2ad90ce'
-    }
   },
 };
 const executableName = 'hc-releases';
 const gitHubRepositoryOwner = 'hashicorp';
-const gitHubRepositoryRepo = 'hc-releases';
-const latestVersion = '0.11.4';
+const gitHubRepositoryRepo = 'releases-api';
+const latestVersion = '0.0.8';
 const supportedGoPlatforms = {
-  'darwin': ['amd64'],
-  'linux': ['amd64'],
-  'windows': ['amd64']
+  'darwin': ['amd64', 'arm64'],
+  'linux': ['amd64']
 };
 
 function ensureSupportedGoPlatform(goOperatingSystem, goArchitecture) {
