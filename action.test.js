@@ -5,7 +5,7 @@ const os = require('os');
 
 const exec = require("@actions/exec");
 
-const mockDataChecksum = '7c4196db1ef6c9fd6e4f6a019f9fc023f668c94d29219db6ad8eff0e2bd8c045';
+const mockDataChecksum = '5663389ef1a8ec48af6ca622e66bf0f54ba8f22c127f14cb8a3f429e40868582';
 const mockRelease = {
   assets: [
     {
@@ -20,10 +20,6 @@ const mockRelease = {
       id: 3,
       name: "hc-releases_0.0.8_darwin_arm64.zip"
     },
-    // {
-    //   id: 3,
-    //   name: "hc-releases_0.11.4_windows_amd64.zip"
-    // },
   ],
   id: "1",
   name: "v0.0.8",
@@ -59,7 +55,7 @@ describe('action', () => {
     const scope = nock('https://api.github.com')
       .get('/repos/hashicorp/releases-api/releases/tags/v0.0.8')
       .reply(200, mockRelease)
-      .get('/repos/hashicorp/releases-api/releases/assets/2')
+      .get('/repos/hashicorp/releases-api/releases/assets/1')
       .replyWithFile(200, path.resolve(__dirname, 'test.zip'), { 'content-type': 'application/octet-stream' });
 
     fs.mkdtemp(path.join(os.tmpdir(), 'setup-hc-releases-'), async (err, directory) => {
@@ -78,7 +74,7 @@ describe('action', () => {
     const scope = nock('https://api.github.com')
       .get('/repos/hashicorp/releases-api/releases/tags/v0.0.8')
       .reply(200, mockRelease)
-      .get('/repos/hashicorp/releases-api/releases/assets/2')
+      .get('/repos/hashicorp/releases-api/releases/assets/1')
       .replyWithFile(200, path.resolve(__dirname, 'test.zip'), { 'content-type': 'application/octet-stream' });
 
     fs.mkdtemp(path.join(os.tmpdir(), 'setup-hc-releases-'), async (err, directory) => {
@@ -100,7 +96,7 @@ describe('action', () => {
       .reply(500, 'expected transient error')
       .get('/repos/hashicorp/releases-api/releases/tags/v0.0.8')
       .reply(200, mockRelease)
-      .get('/repos/hashicorp/releases-api/releases/assets/2')
+      .get('/repos/hashicorp/releases-api/releases/assets/1')
       .replyWithFile(200, path.resolve(__dirname, 'test.zip'), { 'content-type': 'application/octet-stream' });
 
     fs.mkdtemp(path.join(os.tmpdir(), 'setup-hc-releases-'), async (err, directory) => {
@@ -124,7 +120,7 @@ describe('action', () => {
       })
       .get('/repos/hashicorp/releases-api/releases/tags/v0.0.8')
       .reply(200, mockRelease)
-      .get('/repos/hashicorp/releases-api/releases/assets/2')
+      .get('/repos/hashicorp/releases-api/releases/assets/1')
       .replyWithFile(200, path.resolve(__dirname, 'test.zip'), { 'content-type': 'application/octet-stream' });
 
     fs.mkdtemp(path.join(os.tmpdir(), 'setup-hc-releases-'), async (err, directory) => {
@@ -145,7 +141,7 @@ describe('action', () => {
       .reply(429, 'expected rate limit error')
       .get('/repos/hashicorp/releases-api/releases/tags/v0.0.8')
       .reply(200, mockRelease)
-      .get('/repos/hashicorp/releases-api/releases/assets/2')
+      .get('/repos/hashicorp/releases-api/releases/assets/1')
       .replyWithFile(200, path.resolve(__dirname, 'test.zip'), { 'content-type': 'application/octet-stream' });
 
     fs.mkdtemp(path.join(os.tmpdir(), 'setup-hc-releases-'), async (err, directory) => {
