@@ -295,12 +295,13 @@ async function versionNumber() {
     throw new Error(`error executing ${executableName} version: ${stderr}`);
   }
 
-  // Expected output: hc-releases v#.#.# ()
-  if (stdout.length === 0 || stdout.split(' ').length !== 3) {
+  // v1 Expected output: hc-releases v#.#.# ()
+  // v2 Expected output: #.#.#
+  if (stdout.length === 0 || stdout.split('.').length !== 3) {
     throw new Error(`unexpected ${executableName} version output: ${stdout}`);
   }
 
-  return stdout.split(' ')[1].substring(1)
+  return stdout.toString();
 }
 
 exports.ensureSupportedGoPlatform = ensureSupportedGoPlatform;

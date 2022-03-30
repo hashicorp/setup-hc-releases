@@ -149,7 +149,7 @@ async function versionNumber() {
     throw new Error(`unexpected ${executableName} version output: ${stdout}`);
   }
 
-  return stdout;
+  return stdout.toString();
 }
 
 exports.ensureSupportedGoPlatform = ensureSupportedGoPlatform;

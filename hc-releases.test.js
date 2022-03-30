@@ -313,7 +313,7 @@ describe('version number', () => {
   test('throws stdout error', async () => {
     const spy = jest.spyOn(exec, 'exec');
     spy.mockImplementation((commandLine, args, options) => {
-      options.listeners.stdout('v0.1.0');
+      options.listeners.stdout('v0.1.0.10.1');
       Promise.resolve();
     });
 
