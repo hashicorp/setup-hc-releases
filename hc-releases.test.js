@@ -252,14 +252,14 @@ describe('version', () => {
   test('stdout', async () => {
     const spy = jest.spyOn(exec, 'exec');
     spy.mockImplementation((commandLine, args, options) => {
-      options.listeners.stdout('hc-releases v0.1.0 ()');
+      options.listeners.stdout('0.1.0');
       Promise.resolve();
     });
 
     const result = await hcReleases.version();
 
     await expect(spy).toHaveBeenCalled();
-    await expect(result).toEqual({ stderr: '', stdout: 'hc-releases v0.1.0 ()' });
+    await expect(result).toEqual({ stderr: '', stdout: '0.1.0' });
   });
 
   test('stderr', async () => {
@@ -289,7 +289,7 @@ describe('version number', () => {
   test('successful', async () => {
     const spy = jest.spyOn(exec, 'exec');
     spy.mockImplementation((commandLine, args, options) => {
-      options.listeners.stdout('hc-releases v0.1.0 ()');
+      options.listeners.stdout('0.1.0');
       Promise.resolve();
     });
 
