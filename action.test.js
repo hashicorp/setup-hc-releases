@@ -39,7 +39,7 @@ beforeEach(() => {
   const spyExecExec = jest.spyOn(exec, 'exec');
   spyExecExec.mockImplementation((commandLine, args, options) => {
     if (commandLine === 'hc-releases' && args.length === 1 && args[0] === 'version' && options !== undefined && options.listeners !== undefined) {
-      options.listeners.stdout('hc-releases v0.1.0 ()');
+      options.listeners.stdout('0.1.0');
     }
 
     Promise.resolve();
