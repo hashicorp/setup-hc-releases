@@ -1,6 +1,6 @@
 # setup-hc-releases
 
-GitHub Action to install `hc-releases`.
+GitHub Action to install `hc-releases`. Note that `v1` of this action is now deprecated, and `v2` must be used. 
 
 ## Usage
 
@@ -21,8 +21,8 @@ jobs:
 | Input              | Description                                               | Default                |
 | ------------------ | --------------------------------------------------------- | ---------------------- |
 | `github-token`     | GitHub token with release asset access to `hc-releases`.  |                        |
-| `version`          | Version of `hc-releases` to install.                      | `0.0.8`               |
-| `version-checksum` | Platform and version checksum of `hc-releases` to verify. | Automatic for `0.0.8` |
+| `version`          | Version of `hc-releases` to install.                      | `0.1.0`               |
+| `version-checksum` | Platform and version checksum of `hc-releases` to verify. | Automatic for `0.1.0` |
 
 ### Outputs
 

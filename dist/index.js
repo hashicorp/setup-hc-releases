@@ -163,7 +163,7 @@ const tc = __nccwpck_require__(7784);
 const githubRelease = __nccwpck_require__(3098);
 
 const checksums = {
-  '0.0.8': {
+  '0.1.0': {
     'darwin': {
       'amd64': '45013e04fa430f67390a746ec3492842127a719510f382e2fbe658899c94e93a',
       'arm64': '1a9682d27f691f45fc2261c66758ef60e4726e2297df19f483ca632db46f1af6',

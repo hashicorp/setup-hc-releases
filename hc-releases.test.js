@@ -23,7 +23,7 @@ describe('download release asset', () => {
   test('downloads successfully', async () => {
     const releaseAsset = {
       id: 1,
-      name: "hc-releases_0.0.8_linux_amd64.zip",
+      name: "hc-releases_0.1.0_linux_amd64.zip",
     };
 
     fs.mkdtemp(path.join(os.tmpdir(), 'setup-hc-releases-'), async (err, directory) => {
@@ -50,7 +50,7 @@ describe('download release asset', () => {
   test('throws error', async () => {
     const releaseAsset = {
       id: 1,
-      name: "hc-releases_0.0.8_linux_amd64.zip",
+      name: "hc-releases_0.1.0_linux_amd64.zip",
     };
     fs.mkdtemp(path.join(os.tmpdir(), 'setup-hc-releases-'), async (err, directory) => {
       if (err) throw err;
@@ -114,26 +114,26 @@ describe('get release asset', () => {
       assets: [
         {
           id: 1,
-          name: "hc-releases_0.0.8_linux_amd64.zip"
+          name: "hc-releases_0.1.0_linux_amd64.zip"
         },
         {
           id: 2,
-          name: "hc-releases_0.0.8_darwin_amd64.zip"
+          name: "hc-releases_0.1.0_darwin_amd64.zip"
         },
         {
           id: 3,
-          name: "hc-releases_0.0.8_darwin_arm64.zip"
+          name: "hc-releases_0.1.0_darwin_arm64.zip"
         },
       ],
       id: "1",
-      name: "v0.0.8",
+      name: "v0.1.0",
     };
 
     nock('https://api.github.com')
-      .get(`/repos/hashicorp/releases-api/releases/tags/v0.0.8`)
+      .get(`/repos/hashicorp/releases-api/releases/tags/v0.1.0`)
       .reply(200, mockRelease);
 
-    const releaseAsset = await hcReleases.getReleaseAsset(client, '0.0.8', goOperatingSystem, goArchitecture);
+    const releaseAsset = await hcReleases.getReleaseAsset(client, '0.1.0', goOperatingSystem, goArchitecture);
 
     await expect(releaseAsset).toEqual(mockRelease.assets.find((asset) => asset.name.includes(goOperatingSystem) && asset.name.includes(goArchitecture)));
   })
@@ -143,45 +143,45 @@ describe('get release asset', () => {
       assets: [
         {
           id: 1,
-          name: "hc-releases_0.0.8_linux_amd64.zip"
+          name: "hc-releases_0.1.0_linux_amd64.zip"
         },
         {
           id: 2,
-          name: "hc-releases_0.0.8_darwin_amd64.zip"
+          name: "hc-releases_0.1.0_darwin_amd64.zip"
         },
         {
           id: 3,
-          name: "hc-releases_0.0.8_darwin_arm64.zip"
+          name: "hc-releases_0.1.0_darwin_arm64.zip"
         },
       ],
       id: "1",
-      name: "v0.0.8",
+      name: "v0.1.0",
     };
 
     nock('https://api.github.com')
-      .get(`/repos/hashicorp/releases-api/releases/tags/v0.0.8`)
+      .get(`/repos/hashicorp/releases-api/releases/tags/v0.1.0`)
       .reply(200, mockRelease);
 
-    await expect(hcReleases.getReleaseAsset(client, '0.0.8', 'darwin', '386')).rejects.toThrow('Release asset not found in release');
+    await expect(hcReleases.getReleaseAsset(client, '0.1.0', 'darwin', '386')).rejects.toThrow('Release asset not found in release');
   });
 
   test('throws release not found error', async () => {
     nock('https://api.github.com')
-      .get(`/repos/hashicorp/releases-api/releases/tags/v0.0.8`)
+      .get(`/repos/hashicorp/releases-api/releases/tags/v0.1.0`)
       .reply(404, 'Not Found');
 
-    await expect(hcReleases.getReleaseAsset(client, '0.0.8', 'linux', 'amd64')).rejects.toThrow('Not Found');
+    await expect(hcReleases.getReleaseAsset(client, '0.1.0', 'linux', 'amd64')).rejects.toThrow('Not Found');
   });
 });
 
 describe('release asset checksum', () => {
   test.each([
-    ['0.0.8', 'unknown', 'amd64', undefined],
-    ['0.0.8', 'darwin', '386', undefined],
-    ['0.0.8', 'darwin', 'arm64', '1a9682d27f691f45fc2261c66758ef60e4726e2297df19f483ca632db46f1af6'],
-    ['0.0.8', 'darwin', 'amd64', '45013e04fa430f67390a746ec3492842127a719510f382e2fbe658899c94e93a'],
-    ['0.0.8', 'linux', 'amd64', '77337ad7ac48ea71252e5205eab208342731ff596ce8f8b8029c0202c4186feb'],
-    ['0.0.8', 'windows', 'amd64', undefined],
+    ['0.1.0', 'unknown', 'amd64', undefined],
+    ['0.1.0', 'darwin', '386', undefined],
+    ['0.1.0', 'darwin', 'arm64', '71c453fc263d906200a13dd478c4efa7ba7c254f906f7707c5f14988b709ef18'],
+    ['0.1.0', 'darwin', 'amd64', 'c5f8f63c90547831e80a487b8004cdf6b781591e513a6337c9ca3d029ddc80fc'],
+    ['0.1.0', 'linux', 'amd64', 'e0c903383f084b77bf4ce923d343464307fcce75fc73de01e0f75b4f963f2add'],
+    ['0.1.0', 'windows', 'amd64', undefined],
   ])('%s %s/%s', (version, goOperatingSystem, goArchitecture, expected) => {
     const result = hcReleases.releaseAssetChecksum(version, goOperatingSystem, goArchitecture)
     expect(result).toEqual(expected);
@@ -252,14 +252,14 @@ describe('version', () => {
   test('stdout', async () => {
     const spy = jest.spyOn(exec, 'exec');
     spy.mockImplementation((commandLine, args, options) => {
-      options.listeners.stdout('hc-releases v0.0.8 ()');
+      options.listeners.stdout('hc-releases v0.1.0 ()');
       Promise.resolve();
     });
 
     const result = await hcReleases.version();
 
     await expect(spy).toHaveBeenCalled();
-    await expect(result).toEqual({ stderr: '', stdout: 'hc-releases v0.0.8 ()' });
+    await expect(result).toEqual({ stderr: '', stdout: 'hc-releases v0.1.0 ()' });
   });
 
   test('stderr', async () => {
@@ -289,14 +289,14 @@ describe('version number', () => {
   test('successful', async () => {
     const spy = jest.spyOn(exec, 'exec');
     spy.mockImplementation((commandLine, args, options) => {
-      options.listeners.stdout('hc-releases v0.0.8 ()');
+      options.listeners.stdout('hc-releases v0.1.0 ()');
       Promise.resolve();
     });
 
     const result = await hcReleases.versionNumber();
 
     await expect(spy).toHaveBeenCalled();
-    await expect(result).toEqual('0.0.8');
+    await expect(result).toEqual('0.1.0');
   });
 
   test('throws stderr error', async () => {
@@ -313,7 +313,7 @@ describe('version number', () => {
   test('throws stdout error', async () => {
     const spy = jest.spyOn(exec, 'exec');
     spy.mockImplementation((commandLine, args, options) => {
-      options.listeners.stdout('v0.0.8');
+      options.listeners.stdout('v0.1.0');
       Promise.resolve();
     });
 
