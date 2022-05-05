@@ -13,11 +13,11 @@ const githubRelease = require('./github-release');
 const checksums = {
   '0.1.0': {
     'darwin': {
-      'amd64': 'c5f8f63c90547831e80a487b8004cdf6b781591e513a6337c9ca3d029ddc80fc',
-      'arm64': '71c453fc263d906200a13dd478c4efa7ba7c254f906f7707c5f14988b709ef18',
+      'amd64': 'f13698cbd41e6654f66f34e8ebda6f6c25e9111753fb5d4b265cb96408344c87',
+      'arm64': '49514b124e31e33d6486744a1bc4db6b07a1e1548db4255ab53c45eda1ef4654',
     },
     'linux': {
-      'amd64': 'e0c903383f084b77bf4ce923d343464307fcce75fc73de01e0f75b4f963f2add'
+      'amd64': 'cac17910788aea9451fd6f9d093217f97c1f8c1fbe9607d7953bcebb70763d10'
     },
   },
 };
