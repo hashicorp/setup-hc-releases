@@ -44,6 +44,11 @@ Run the tests :heavy_check_mark:
 npm run test
 ```
 
+For local debugging, you can also run a single test suite, e.g.:
+```bash
+npm test hc-releases.test.js
+```
+
 ### Packaging for Distribution
 
 Packaging assembles the code into one file (`dist/index.js`) that can be checked in to Git, enabling fast and reliable execution and preventing the need to check in `node_modules`.
