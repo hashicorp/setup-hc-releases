@@ -163,20 +163,20 @@ const tc = __nccwpck_require__(7784);
 const githubRelease = __nccwpck_require__(3098);
 
 const checksums = {
-  '0.1.0': {
+  '0.1.2': {
     'darwin': {
-      'amd64': 'f13698cbd41e6654f66f34e8ebda6f6c25e9111753fb5d4b265cb96408344c87',
-      'arm64': '49514b124e31e33d6486744a1bc4db6b07a1e1548db4255ab53c45eda1ef4654',
+      'amd64': '8a68b234f6e737397ef08ad7836f07df194406049c35b649d7f34ac09e5996f5',
+      'arm64': 'f3cb3f9a34f8bf8218240bb88d28b4ae3d2a0b58161fcece9e13d0af976fdb75',
     },
     'linux': {
-      'amd64': 'cac17910788aea9451fd6f9d093217f97c1f8c1fbe9607d7953bcebb70763d10'
+      'amd64': '47a86cd0280a862c0025bad921a39e72c90e22923d1eae1f3bfca29ca989cc4e'
     },
   },
 };
 const executableName = 'hc-releases';
 const gitHubRepositoryOwner = 'hashicorp';
 const gitHubRepositoryRepo = 'releases-api';
-const latestVersion = '0.1.0';
+const latestVersion = '0.1.2';
 const supportedGoPlatforms = {
   'darwin': ['amd64', 'arm64'],
   'linux': ['amd64']
