@@ -23,7 +23,7 @@ describe('download release asset', () => {
   test('downloads successfully', async () => {
     const releaseAsset = {
       id: 1,
-      name: "hc-releases_0.1.0_linux_amd64.zip",
+      name: "hc-releases_0.1.2_linux_amd64.zip",
     };
 
     fs.mkdtemp(path.join(os.tmpdir(), 'setup-hc-releases-'), async (err, directory) => {
@@ -50,7 +50,7 @@ describe('download release asset', () => {
   test('throws error', async () => {
     const releaseAsset = {
       id: 1,
-      name: "hc-releases_0.1.0_linux_amd64.zip",
+      name: "hc-releases_0.1.2_linux_amd64.zip",
     };
     fs.mkdtemp(path.join(os.tmpdir(), 'setup-hc-releases-'), async (err, directory) => {
       if (err) throw err;
@@ -114,26 +114,26 @@ describe('get release asset', () => {
       assets: [
         {
           id: 1,
-          name: "hc-releases_0.1.0_linux_amd64.zip"
+          name: "hc-releases_0.1.2_linux_amd64.zip"
         },
         {
           id: 2,
-          name: "hc-releases_0.1.0_darwin_amd64.zip"
+          name: "hc-releases_0.1.2_darwin_amd64.zip"
         },
         {
           id: 3,
-          name: "hc-releases_0.1.0_darwin_arm64.zip"
+          name: "hc-releases_0.1.2_darwin_arm64.zip"
         },
       ],
       id: "1",
-      name: "v0.1.0",
+      name: "v0.1.2",
     };
 
     nock('https://api.github.com')
-      .get(`/repos/hashicorp/releases-api/releases/tags/v0.1.0`)
+      .get(`/repos/hashicorp/releases-api/releases/tags/v0.1.2`)
       .reply(200, mockRelease);
 
-    const releaseAsset = await hcReleases.getReleaseAsset(client, '0.1.0', goOperatingSystem, goArchitecture);
+    const releaseAsset = await hcReleases.getReleaseAsset(client, '0.1.2', goOperatingSystem, goArchitecture);
 
     await expect(releaseAsset).toEqual(mockRelease.assets.find((asset) => asset.name.includes(goOperatingSystem) && asset.name.includes(goArchitecture)));
   })
@@ -143,26 +143,26 @@ describe('get release asset', () => {
       assets: [
         {
           id: 1,
-          name: "hc-releases_0.1.0_linux_amd64.zip"
+          name: "hc-releases_0.1.2_linux_amd64.zip"
         },
         {
           id: 2,
-          name: "hc-releases_0.1.0_darwin_amd64.zip"
+          name: "hc-releases_0.1.2_darwin_amd64.zip"
         },
         {
           id: 3,
-          name: "hc-releases_0.1.0_darwin_arm64.zip"
+          name: "hc-releases_0.1.2_darwin_arm64.zip"
         },
       ],
       id: "1",
-      name: "v0.1.0",
+      name: "v0.1.2",
     };
 
     nock('https://api.github.com')
-      .get(`/repos/hashicorp/releases-api/releases/tags/v0.1.0`)
+      .get(`/repos/hashicorp/releases-api/releases/tags/v0.1.2`)
       .reply(200, mockRelease);
 
-    await expect(hcReleases.getReleaseAsset(client, '0.1.0', 'darwin', '386')).rejects.toThrow('Release asset not found in release');
+    await expect(hcReleases.getReleaseAsset(client, '0.1.2', 'darwin', '386')).rejects.toThrow('Release asset not found in release');
   });
 
   test('throws release not found error', async () => {
@@ -176,12 +176,12 @@ describe('get release asset', () => {
 
 describe('release asset checksum', () => {
   test.each([
-    ['0.1.0', 'unknown', 'amd64', undefined],
-    ['0.1.0', 'darwin', '386', undefined],
-    ['0.1.0', 'darwin', 'arm64', '49514b124e31e33d6486744a1bc4db6b07a1e1548db4255ab53c45eda1ef4654'],
-    ['0.1.0', 'darwin', 'amd64', 'f13698cbd41e6654f66f34e8ebda6f6c25e9111753fb5d4b265cb96408344c87'],
-    ['0.1.0', 'linux', 'amd64', 'cac17910788aea9451fd6f9d093217f97c1f8c1fbe9607d7953bcebb70763d10'],
-    ['0.1.0', 'windows', 'amd64', undefined],
+    ['0.1.2', 'unknown', 'amd64', undefined],
+    ['0.1.2', 'darwin', '386', undefined],
+    ['0.1.2', 'darwin', 'arm64', 'f3cb3f9a34f8bf8218240bb88d28b4ae3d2a0b58161fcece9e13d0af976fdb75'],
+    ['0.1.2', 'darwin', 'amd64', '8a68b234f6e737397ef08ad7836f07df194406049c35b649d7f34ac09e5996f5'],
+    ['0.1.2', 'linux', 'amd64', '47a86cd0280a862c0025bad921a39e72c90e22923d1eae1f3bfca29ca989cc4e'],
+    ['0.1.2', 'windows', 'amd64', undefined],
   ])('%s %s/%s', (version, goOperatingSystem, goArchitecture, expected) => {
     const result = hcReleases.releaseAssetChecksum(version, goOperatingSystem, goArchitecture)
     expect(result).toEqual(expected);
@@ -252,14 +252,14 @@ describe('version', () => {
   test('stdout', async () => {
     const spy = jest.spyOn(exec, 'exec');
     spy.mockImplementation((commandLine, args, options) => {
-      options.listeners.stdout('0.1.0');
+      options.listeners.stdout('0.1.2');
       Promise.resolve();
     });
 
     const result = await hcReleases.version();
 
     await expect(spy).toHaveBeenCalled();
-    await expect(result).toEqual({ stderr: '', stdout: '0.1.0' });
+    await expect(result).toEqual({ stderr: '', stdout: '0.1.2' });
   });
 
   test('stderr', async () => {
@@ -289,14 +289,14 @@ describe('version number', () => {
   test('successful', async () => {
     const spy = jest.spyOn(exec, 'exec');
     spy.mockImplementation((commandLine, args, options) => {
-      options.listeners.stdout('0.1.0');
+      options.listeners.stdout('0.1.2');
       Promise.resolve();
     });
 
     const result = await hcReleases.versionNumber();
 
     await expect(spy).toHaveBeenCalled();
-    await expect(result).toEqual('0.1.0');
+    await expect(result).toEqual('0.1.2');
   });
 
   test('throws stderr error', async () => {
@@ -313,7 +313,7 @@ describe('version number', () => {
   test('throws stdout error', async () => {
     const spy = jest.spyOn(exec, 'exec');
     spy.mockImplementation((commandLine, args, options) => {
-      options.listeners.stdout('v0.1.0.10.1');
+      options.listeners.stdout('v0.1.2.10.1');
       Promise.resolve();
     });
 
