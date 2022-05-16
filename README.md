@@ -21,8 +21,8 @@ jobs:
 | Input              | Description                                               | Default                |
 | ------------------ | --------------------------------------------------------- | ---------------------- |
 | `github-token`     | GitHub token with release asset access to `hc-releases`.  |                        |
-| `version`          | Version of `hc-releases` to install.                      | `0.1.0`               |
-| `version-checksum` | Platform and version checksum of `hc-releases` to verify. | Automatic for `0.1.0` |
+| `version`          | Version of `hc-releases` to install.                      | `0.1.2`               |
+| `version-checksum` | Platform and version checksum of `hc-releases` to verify. | Automatic for `0.1.2` |
 
 ### Outputs
 
@@ -58,3 +58,32 @@ Run prepare
 ```bash
 npm run prepare
 ```
+
+### Supporting a new version of hc-releases
+
+1. Clone this repo
+2. Run `npm install`
+3. Update the [README](https://github.com/hashicorp/setup-hc-releases/blob/main/README.md) to reflect the new default of `hc-releases` version to install.
+4. Update [the version](https://github.com/hashicorp/setup-hc-releases/blob/main/action.yml#L16) in `action.yml` to reflect the new default version of `hc-releases` to install.
+5. Update `const latestVersion` in `hc-releases.js` to reflect the new version of `hc-releases`. 
+6. Download the [SHASUMS file](https://github.com/hashicorp/releases-api/releases) from the new version of `hc-releases`
+7. Add a new object under `const checkSums = {` in `hc-releases.js` with the checksums for the new version, e.g. 
+
+```
+  '0.1.2': {
+    'darwin': {
+      'amd64': '8a68b234f6e737397ef08ad7836f07df194406049c35b649d7f34ac09e5996f5',
+      'arm64': 'f3cb3f9a34f8bf8218240bb88d28b4ae3d2a0b58161fcece9e13d0af976fdb75',
+    },
+    'linux': {
+      'amd64': '47a86cd0280a862c0025bad921a39e72c90e22923d1eae1f3bfca29ca989cc4e'
+    },
+  },
+```
+8. Run `npm run prepare`. This will update `dist/index.js` and `dist/index.js.map` with the new version's checksums.
+9. Run tests locally to verify they are passing with `npm run test`. If they're failing, fix the tests.
+10. Commit your changes, open a PR, get it reviewed, and merge to `main`.
+11. Checkout the `main` branch and pull down latest changes.
+12. Create a new tag for the release, e.g. `v2.0.1` with `git tag v2.0.1 && git push origin v2.0.1`. 
+13. Delete the major version tag, e.g. `git tag -d v2 && git push origin :refs/tags/v2`
+14. Create a new major version tag, e.g. `git tag v2 && git push origin v2`
