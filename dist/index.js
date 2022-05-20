@@ -181,10 +181,21 @@ const checksums = {
       'amd64': '47a86cd0280a862c0025bad921a39e72c90e22923d1eae1f3bfca29ca989cc4e'
     },
   },
+  '0.1.3': {
+    'darwin': {
+      'amd64': 'f2e0a367c35f0c0002e7d1053419fff43a15fd757e2e2c5ef6f30822f12c9da7',
+      'arm64': '6d9e975036a760171f19f23123e69bda3f51994986073f4aac88b9c49c7c1a51',
+    },
+    'linux': {
+      'amd64': '7cdb6cccffa9026363c285a3f0bc05741da4a7e14e5f00aca2a0eab2f9057120'
+    },
+  },
 };
 const executableName = 'hc-releases';
 const gitHubRepositoryOwner = 'hashicorp';
 const gitHubRepositoryRepo = 'releases-api';
+// This should be set to the version of hc-releases
+// we want to test with `npm run test`. Real API calls are made w/this version.
 const latestVersion = '0.1.2';
 const supportedGoPlatforms = {
   'darwin': ['amd64', 'arm64'],
