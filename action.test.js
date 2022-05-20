@@ -5,7 +5,7 @@ const os = require('os');
 
 const exec = require("@actions/exec");
 
-const mockDataChecksum = '5663389ef1a8ec48af6ca622e66bf0f54ba8f22c127f14cb8a3f429e40868582';
+const mockDataChecksum = 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855';
 const mockRelease = {
   assets: [
     {
