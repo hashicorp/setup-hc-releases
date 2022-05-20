@@ -13,7 +13,7 @@ inputs:
   version:
     description: "Version of hc-releases to install."
     required: false
-    default: "0.1.2"
+    default: "0.1.3"
   version-checksum:
     description: "Platform and version checksum of hc-releases to verify."
     required: false
