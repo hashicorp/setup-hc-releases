@@ -53,7 +53,7 @@ const gitHubRepositoryOwner = 'hashicorp';
 const gitHubRepositoryRepo = 'releases-api';
 // This should be set to the version of hc-releases
 // we want to test with `npm run test`. Real API calls are made w/this version.
-const latestVersion = '0.1.2';
+const latestVersion = '0.1.4';
 const supportedGoPlatforms = {
   'darwin': ['amd64', 'arm64'],
   'linux': ['amd64']
