@@ -11,70 +11,52 @@ const tc = require('@actions/tool-cache');
 const githubRelease = require('./github-release');
 
 const checksums = {
-  '0.11.3': {
+  '0.1.0': {
     'darwin': {
-      'amd64': '9c5785b79790efdc665a90b84d8d3c8c5569748f1313d7508fd737fe3db1df89'
+      'amd64': 'f13698cbd41e6654f66f34e8ebda6f6c25e9111753fb5d4b265cb96408344c87',
+      'arm64': '49514b124e31e33d6486744a1bc4db6b07a1e1548db4255ab53c45eda1ef4654',
     },
     'linux': {
-      'amd64': '9016ea5f12f267cb5109454e411bb5795d42224463e8e702f3ad0afb8d9b1f0f'
-    },
-    'windows': {
-      'amd64': '9c90ea397bf6fe5a89b0f2f3334bdc0e8058e8d90e735e8e8266f209ddf994cd'
-    }
-  },
-  '0.11.4': {
-    'darwin': {
-      'amd64': 'c8678408e8d5a2ac1c7e24fab29f74fd6e42d545b94fb7f2ed89e39cffbef15b'
-    },
-    'linux': {
-      'amd64': '093fc7848fd8ae673a6359d7851fda991744d51e4b5ee317b327eb03c89df5c4'
-    },
-    'windows': {
-      'amd64': '9f1a6292c431100966105b24fe411906fffe11207af3fd7ae4322231cce891f0'
+      'amd64': 'cac17910788aea9451fd6f9d093217f97c1f8c1fbe9607d7953bcebb70763d10'
     },
   },
-  '0.11.5': {
+  '0.1.2': {
     'darwin': {
-      'amd64': '370536657975e4416da813a1ba5848d39648ddebfdc0b3bb05857d3cf4993015'
+      'amd64': '8a68b234f6e737397ef08ad7836f07df194406049c35b649d7f34ac09e5996f5',
+      'arm64': 'f3cb3f9a34f8bf8218240bb88d28b4ae3d2a0b58161fcece9e13d0af976fdb75',
     },
     'linux': {
-      'amd64': 'aef0b8590c861b08a637737af3bdf27b40fb687657c21ee489832994af834aef'
+      'amd64': '47a86cd0280a862c0025bad921a39e72c90e22923d1eae1f3bfca29ca989cc4e'
     },
-    'windows': {
-      'amd64': '6f754b8dec1433742f1769202283793c4057cfc60c04f2a03fc32bbb68291f69'
-    }
   },
-  '0.11.6': {
+  '0.1.3': {
     'darwin': {
-      'amd64': 'd2f46767437c7605ce4e8bfc2291f61115e2e4639dacef8aad6f1cc061dfef71'
+      'amd64': 'f2e0a367c35f0c0002e7d1053419fff43a15fd757e2e2c5ef6f30822f12c9da7',
+      'arm64': '6d9e975036a760171f19f23123e69bda3f51994986073f4aac88b9c49c7c1a51',
     },
     'linux': {
-      'amd64': 'a66277a7f8e8219aa85fd45dfca82483ed1f4e1be7a4899dbc9251c500dd6553'
+      'amd64': '7cdb6cccffa9026363c285a3f0bc05741da4a7e14e5f00aca2a0eab2f9057120'
     },
-    'windows': {
-      'amd64': '454e88864a459524f598e9e2b13d12afb3dfbd40691c60b685d59f7c74478f54'
-    }
   },
-  '0.11.7': {
+  '0.1.4': {
     'darwin': {
-      'amd64': '096ba7ee269efd5215a378b9f0f04ade7ada1a8ffda836fd91171ed8a2e8d6e9'
+      'amd64': '423445e61b03fa40c32d7e0dc5b441fc42a9e1bf0974f4a8d0240f3cfa9c515e',
+      'arm64': '87ef72eb569c5864048e18bf92a30f4c7ad5cbda4190590689a6d80f61c9d582',
     },
     'linux': {
-      'amd64': '75add216e9e89e11f2aaeb48bba9c3adaad7a01cdb2469fd900534413b178400'
+      'amd64': '3a89ddbef3bf035ccc0ef86528d92de8e6b4f1cec4665c75de005d7b356fe0e3'
     },
-    'windows': {
-      'amd64': '3e7f3e12bb7fc0fadb62e75187eff70c36dfb70b50e29e8b78dbdd78a2ad90ce'
-    }
   },
 };
 const executableName = 'hc-releases';
 const gitHubRepositoryOwner = 'hashicorp';
-const gitHubRepositoryRepo = 'hc-releases';
-const latestVersion = '0.11.4';
+const gitHubRepositoryRepo = 'releases-api';
+// This should be set to the version of hc-releases
+// we want to test with `npm run test`. Real API calls are made w/this version.
+const latestVersion = '0.1.2';
 const supportedGoPlatforms = {
-  'darwin': ['amd64'],
-  'linux': ['amd64'],
-  'windows': ['amd64']
+  'darwin': ['amd64', 'arm64'],
+  'linux': ['amd64']
 };
 
 function ensureSupportedGoPlatform(goOperatingSystem, goArchitecture) {
@@ -190,12 +172,13 @@ async function versionNumber() {
     throw new Error(`error executing ${executableName} version: ${stderr}`);
   }
 
-  // Expected output: hc-releases v#.#.# ()
-  if (stdout.length === 0 || stdout.split(' ').length !== 3) {
+  // v1 Expected output: hc-releases v#.#.# ()
+  // v2 Expected output: #.#.#
+  if (stdout.length === 0 || stdout.split('.').length !== 3) {
     throw new Error(`unexpected ${executableName} version output: ${stdout}`);
   }
 
-  return stdout.split(' ')[1].substring(1)
+  return stdout.toString();
 }
 
 exports.ensureSupportedGoPlatform = ensureSupportedGoPlatform;
