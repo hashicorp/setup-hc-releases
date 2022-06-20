@@ -79,10 +79,12 @@ npm run prepare
     },
   },
 ```
-7. Run `npm run prepare`. This will update `dist/index.js` and `dist/index.js.map` with the new version's checksums.
-8. Run tests locally to verify they are passing with `npm run test`. If they're failing, fix the tests.
-9. Commit your changes, open a PR, get it reviewed, and merge to `main`.
-10. Checkout the `main` branch and pull down latest changes.
-11. Create a new tag for the release, e.g. `v2.0.1` with `git tag v2.0.1 && git push origin v2.0.1`. 
-12. Delete the major version tag, e.g. `git tag -d v2 && git push origin :refs/tags/v2`
-13. Create a new major version tag, e.g. `git tag v2 && git push origin v2`
+7. Update the versions in the test suite and the checksums in the `release asset checksum` test.
+8. Update `latestVersion` to specify the new version in `hc-releases.js`.
+9. Run `npm run prepare`. This will update `dist/index.js` and `dist/index.js.map` with the new version's checksums.
+10. Run tests locally to verify they are passing with `npm run test`. If they're failing, fix the tests.
+11. Commit your changes, open a PR, get it reviewed, and merge to `main`.
+12. Checkout the `main` branch and pull down latest changes.
+13. Create a new tag for the release, e.g. `v2.0.1` with `git tag v2.0.1 && git push origin v2.0.1`.
+14. Delete the major version tag, e.g. `git tag -d v2 && git push origin :refs/tags/v2`
+15. Create a new major version tag, e.g. `git tag v2 && git push origin v2`
