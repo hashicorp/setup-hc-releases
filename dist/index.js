@@ -199,6 +199,15 @@ const checksums = {
       'amd64': '3a89ddbef3bf035ccc0ef86528d92de8e6b4f1cec4665c75de005d7b356fe0e3'
     },
   },
+  '0.1.5': {
+    'darwin': {
+      'amd64': '9d509ec2d7e9c6725b48c580fd1ef76723e45dbf0d46f8a7c4cc51b0d6e0f75f',
+      'arm64': 'bdd9a5aac7ec83f3453bf47b253ac5322a78d2c52ebe5b26dfa5c90874c39ead',
+    },
+    'linux': {
+      'amd64': '93d454d6d1242ea246646a3a6ee3a17290c289f70cc9d2b5d5b184672a91541e'
+    },
+  },
 };
 const executableName = 'hc-releases';
 const gitHubRepositoryOwner = 'hashicorp';
