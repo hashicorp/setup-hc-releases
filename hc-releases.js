@@ -110,6 +110,15 @@ const checksums = {
       'amd64': '594f7c943ea7241a29c6de33c98acac7e243dcee5aa68ca98a5bbaf80573760c',
     },
   },
+  '0.1.13': {
+    'darwin': {
+      'amd64': '3a5ec41278282c98280269cfb197d95a5d3ae5e40af9ffe61f2337ca1b8b8e59',
+      'arm64': '9f1005a219a3a17a97f7885419788c77fc5d0b867fc920b71877418a779d07bf',
+    },
+    'linux': {
+      'amd64': '74c08e8181c3524ce13aabdaddf6503dd478cf54fb4d0e988ca22c6d94804951',
+    },
+  },
 };
 const executableName = 'hc-releases';
 const gitHubRepositoryOwner = 'hashicorp';
