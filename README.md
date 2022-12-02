@@ -21,8 +21,8 @@ jobs:
 | Input              | Description                                               | Default                |
 | ------------------ | --------------------------------------------------------- | ---------------------- |
 | `github-token`     | GitHub token with release asset access to `hc-releases`.  |                        |
-| `version`          | Version of `hc-releases` to install.                      | `0.1.13`               |
-| `version-checksum` | Platform and version checksum of `hc-releases` to verify. | Automatic for `0.1.13` |
+| `version`          | Version of `hc-releases` to install.                      | `0.1.14`               |
+| `version-checksum` | Platform and version checksum of `hc-releases` to verify. | Automatic for `0.1.14` |
 
 ### Outputs
 
@@ -45,6 +45,7 @@ npm run test
 ```
 
 For local debugging, you can also run a single test suite, e.g.:
+
 ```bash
 npm test hc-releases.test.js
 ```
@@ -79,6 +80,7 @@ npm run prepare
     },
   },
 ```
+
 7. Run `npm run prepare`. This will update `dist/index.js` and `dist/index.js.map` with the new version's checksums.
 8. Run tests locally to verify they are passing with `npm run test`. If they're failing, fix the tests.
 9. Commit your changes, open a PR, get it reviewed, and merge to `main`.
