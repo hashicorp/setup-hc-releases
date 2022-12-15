@@ -271,3 +271,4 @@ exports.releaseAssetChecksum = releaseAssetChecksum;
 exports.verifyReleaseAsset = verifyReleaseAsset;
 exports.version = version;
 exports.versionNumber = versionNumber;
+exports.checksums = checksums;
