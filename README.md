@@ -66,8 +66,9 @@ npm run prepare
 2. Run `npm install`
 3. Update the [README](https://github.com/hashicorp/setup-hc-releases/blob/main/README.md) to reflect the new default of `hc-releases` version to install.
 4. Update [the version](https://github.com/hashicorp/setup-hc-releases/blob/main/action.yml#L16) in `action.yml` to reflect the new default version of `hc-releases` to install.
-5. Download the [SHASUMS file](https://github.com/hashicorp/releases-api/releases) from the new version of `hc-releases`
-6. Add a new object under `const checkSums = {` in `hc-releases.js` with the checksums for the new version, e.g.
+5. Update [latestVersion](https://github.com/hashicorp/setup-hc-releases/blob/main/hc-releases.js#L137) in `hc-releases.js` to reflect the new version.
+6. Download the [SHASUMS file](https://github.com/hashicorp/releases-api/releases) from the new version of `hc-releases`
+7. Add a new object under `const checksums = {` in `hc-releases.js` with the checksums for the new version, e.g.
 
 ```
   '0.1.2': {
@@ -81,10 +82,10 @@ npm run prepare
   },
 ```
 
-7. Run `npm run prepare`. This will update `dist/index.js` and `dist/index.js.map` with the new version's checksums.
-8. Run tests locally to verify they are passing with `npm run test`. If they're failing, fix the tests.
-9. Commit your changes, open a PR, get it reviewed, and merge to `main`.
-10. Checkout the `main` branch and pull down latest changes.
-11. Create a new tag for the release, e.g. `v2.0.1` with `git tag v2.0.1 && git push origin v2.0.1`.
-12. Delete the major version tag, e.g. `git tag -d v2 && git push origin :refs/tags/v2`
-13. Create a new major version tag, e.g. `git tag v2 && git push origin v2`
+8. Run `npm run prepare`. This will update `dist/index.js` and `dist/index.js.map` with the new version's checksums.
+9. Run tests locally to verify they are passing with `npm run test`. If they're failing, fix the tests.  **Note:** the live tests require a valid GITHUB_TOKEN set in your environment.
+10. Commit your changes, open a PR, get it reviewed, and merge to `main`.
+11. Checkout the `main` branch and pull down latest changes.
+12. Create a new tag for the release, e.g. `v2.0.1` with `git tag v2.0.1 && git push origin v2.0.1`.
+13. Delete the major version tag, e.g. `git tag -d v2 && git push origin :refs/tags/v2`
+14. Create a new major version tag, e.g. `git tag v2 && git push origin v2`
