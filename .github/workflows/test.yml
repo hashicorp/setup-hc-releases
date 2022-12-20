@@ -12,4 +12,12 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - run: npm ci
-    - run: npm test
+    - name: npm mock tests
+      run: npm run test -- --testPathIgnorePatterns hc-releases.live.test.js
+
+    # only use the live auth token for the tests that require it
+    - name: npm live tests
+      env:
+        GITHUB_TOKEN: ${{ secrets.TOKEN_DOWNLOAD_RELAPI }}
+      run: |
+        npm test hc-releases.live.test.js
