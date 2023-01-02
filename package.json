@@ -40,7 +40,7 @@
   "devDependencies": {
     "@octokit/rest": "^19.0.5",
     "@vercel/ncc": "^0.34.0",
-    "eslint": "^8.30.0",
+    "eslint": "^8.31.0",
     "jest": "^29.3.1",
     "nock": "^13.2.9"
   }
