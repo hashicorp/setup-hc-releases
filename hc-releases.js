@@ -1,3 +1,8 @@
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 const crypto = require('crypto');
 const fs = require('fs');
 // const stream = require('stream');
