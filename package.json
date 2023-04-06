@@ -35,7 +35,7 @@
     "@actions/tool-cache": "^1.7.1",
     "@octokit/plugin-retry": "^4.0.3",
     "@octokit/plugin-throttling": "^3.5.2",
-    "got": "^11.8.3"
+    "got": "^11.8.5"
   },
   "devDependencies": {
     "@octokit/rest": "^19.0.5",
