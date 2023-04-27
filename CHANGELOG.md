@@ -1,3 +1,10 @@
+# v3.0.0
+
+NOTES
+
+- Rewrite action in bash
+- Bump default `hc-releases` version to 0.1.15
+
 # v1.0.6
 
 NOTES

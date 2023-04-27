@@ -1,23 +1,56 @@
 name: "Testing"
 on:
+  workflow_dispatch:
+    inputs:
+      github-token:
+        type: string
+        description: "GitHub token to use to download hc-releases"
+        required: true
+      tag:
+        type: string
+        description: "Tag indicating which release of hc-releases to install"
+
   pull_request:
   push:
     branches:
       - main
       - 'releases/*'
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
   unit:
     runs-on: ubuntu-latest
+    # TODO test on all supported platforms (need GH-hosted darwin runners)
+    strategy:
+      matrix:
+        cli-tag:
+          - ''
+          - '0.1.14' # need not be the most recent
     steps:
-    - uses: actions/checkout@v2
-    - run: npm ci
-    - name: npm mock tests
-      run: npm run test -- --testPathIgnorePatterns hc-releases.live.test.js
+    - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
 
-    # only use the live auth token for the tests that require it
-    - name: npm live tests
-      env:
-        GITHUB_TOKEN: ${{ secrets.TOKEN_DOWNLOAD_RELAPI }}
+    - name: "Install gh (only for running locally via act)"
+      if: env.CI == 'true' && env.ACT == 'true'
       run: |
-        npm test hc-releases.live.test.js
+        run_quiet() { local logfile="${RUNNER_TEMP}/command.log" ; "$@" > "$logfile" 2>&1 || { cat "$logfile" ; exit 1 ; } ; }
+
+        type -p curl >/dev/null || (apt update && apt install curl -y)
+        curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg -o /usr/share/keyrings/githubcli-archive-keyring.gpg
+        echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" > /etc/apt/sources.list.d/github-cli.list
+        run_quiet apt update
+        run_quiet apt install -y gh
+        gh --version
+
+    - name: Install hc-releases
+      uses: ./
+      id: install
+      with:
+        github-token: ${{ inputs.github-token || secrets.TOKEN_DOWNLOAD_RELAPI }}
+        tag: ${{ inputs.tag || matrix.cli-tag }}
+
+    - name: Report Version
+      run: |
+        echo "installed version: ${{ steps.install.outputs.version }}"
