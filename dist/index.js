@@ -1,13 +1,13 @@
-/**
- * Copyright (c) HashiCorp, Inc.
- * SPDX-License-Identifier: MPL-2.0
- */
-
 require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 4582:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
 
 const process = __nccwpck_require__(7282);
 
@@ -71,6 +71,11 @@ module.exports = run;
 
 /***/ 3098:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
 
 const fs = __nccwpck_require__(7147);
 const path = __nccwpck_require__(1017);
@@ -154,6 +159,11 @@ exports.getByTag = getByTag;
 
 /***/ 8498:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
 
 const crypto = __nccwpck_require__(6113);
 const fs = __nccwpck_require__(7147);
@@ -285,13 +295,24 @@ const checksums = {
       'amd64': 'dc786c5dcf985139a5bd325f6af633d617f4c74787ed215e2d9c590ab200c951',
     },
   },
+  '0.1.15': {
+    'darwin': {
+      'amd64': 'c4ed0fcfc4e9eec4a1980b117a28bc9a5d44072789ffd16a34c3e67b4c1a26cd',
+      'arm64': '9ac3237ef98000bfe6a606e883c28975b5cf059ac8a7074f6edf6a4bb363feb9',
+    },
+    'linux': {
+      'amd64': '1fb1f421263447dc64947bccb6bfc741e3b58f920471417ad5d5a56472b935c0',
+    },
+
+  },
 };
+
 const executableName = 'hc-releases';
 const gitHubRepositoryOwner = 'hashicorp';
 const gitHubRepositoryRepo = 'releases-api';
 // This should be set to the version of hc-releases
 // we want to test with `npm run test`. Real API calls are made w/this version.
-const latestVersion = '0.1.2';
+const latestVersion = '0.1.15';
 const supportedGoPlatforms = {
   'darwin': ['amd64', 'arm64'],
   'linux': ['amd64']
@@ -428,12 +449,18 @@ exports.releaseAssetChecksum = releaseAssetChecksum;
 exports.verifyReleaseAsset = verifyReleaseAsset;
 exports.version = version;
 exports.versionNumber = versionNumber;
+exports.checksums = checksums;
 
 
 /***/ }),
 
 /***/ 6565:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
 
 const os = __nccwpck_require__(2037);
 
@@ -24582,6 +24609,11 @@ function wrappy (fn, cb) {
 /***/ 1261:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 const core = __nccwpck_require__(2186);
 const { GitHub, getOctokitOptions } = __nccwpck_require__(3030)
 const { retry } = __nccwpck_require__(6298)
@@ -24863,6 +24895,11 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
+/**
+ * Copyright (c) HashiCorp, Inc.
+ * SPDX-License-Identifier: MPL-2.0
+ */
+
 const action = __nccwpck_require__(4582);
 
 async function run() {
