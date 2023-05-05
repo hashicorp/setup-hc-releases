@@ -34,4 +34,4 @@ runs:
       shell: bash
       env:
         GH_TOKEN: ${{ inputs.github-token }}
-      run: DEST_DIR="${HOME}/bin" ./scripts/setup-hc-releases.sh "${{ inputs.version }}"
+      run: DEST_DIR="${HOME}/bin" "${GITHUB_ACTION_PATH}/scripts/setup-hc-releases.sh" "${{ inputs.version }}"
