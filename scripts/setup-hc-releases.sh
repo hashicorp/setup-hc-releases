@@ -55,8 +55,8 @@ sums_name="hc-releases_${version}_SHA256SUMS"
 echo "Installing release $version"
 
 # download
-gh release download --repo=hashicorp/releases-api "$tag" --clobber --pattern "$sums_name"
-gh release download --repo=hashicorp/releases-api "$tag" --clobber --pattern "*$pattern"
+gh release download --repo=hashicorp/releases-api "$tag" --pattern "$sums_name"
+gh release download --repo=hashicorp/releases-api "$tag" --pattern "*$pattern"
 # verify checksum
 sha256sum --quiet --strict --check <( grep "$pattern" "$sums_name" )
 

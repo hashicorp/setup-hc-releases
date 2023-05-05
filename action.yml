@@ -1,6 +1,7 @@
 # Copyright (c) HashiCorp, Inc.
 # SPDX-License-Identifier: MPL-2.0
 
+---
 name: "Setup hc-releases"
 author: "HashiCorp"
 description: "Install hc-releases"
@@ -13,8 +14,8 @@ inputs:
   github-token:
     description: "GitHub token with release asset access to hc-releases."
     required: true
-  tag:
-    description: "Tag of release to install, e.g. v0.1.10."
+  version:
+    description: "Version of hc-releases to install, e.g. v0.1.10."
     default: "v0.1.15"
   install-dir:
     description: "Where the tool will be installed; this directory will be added to GITHUB_PATH."
@@ -33,4 +34,4 @@ runs:
       shell: bash
       env:
         GH_TOKEN: ${{ inputs.github-token }}
-      run: DEST_DIR="${HOME}/bin" ./scripts/setup-hc-releases.sh "${{ inputs.tag }}"
+      run: DEST_DIR="${HOME}/bin" ./scripts/setup-hc-releases.sh "${{ inputs.version }}"

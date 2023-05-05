@@ -1,3 +1,4 @@
+---
 name: "Testing"
 on:
   workflow_dispatch:
@@ -6,9 +7,9 @@ on:
         type: string
         description: "GitHub token to use to download hc-releases"
         required: true
-      tag:
+      version:
         type: string
-        description: "Tag indicating which release of hc-releases to install"
+        description: "Version of hc-releases to install"
 
   pull_request:
   push:
@@ -26,7 +27,7 @@ jobs:
     # TODO test on all supported platforms (need GH-hosted darwin runners)
     strategy:
       matrix:
-        cli-tag:
+        version:
           - ''
           - '0.1.14' # need not be the most recent
     steps:
@@ -49,7 +50,7 @@ jobs:
       id: install
       with:
         github-token: ${{ inputs.github-token || secrets.TOKEN_DOWNLOAD_RELAPI }}
-        tag: ${{ inputs.tag || matrix.cli-tag }}
+        version: ${{ inputs.version || matrix.version }}
 
     - name: Report Version
       run: |
