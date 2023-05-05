@@ -28,30 +28,59 @@ jobs:
     strategy:
       matrix:
         version:
-          - ''
+          - '${{ inputs.version }}'
           - '0.1.14' # need not be the most recent
     steps:
     - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
 
-    - name: "Install gh (only for running locally via act)"
+    - name: "Install tools (only for running locally via act)"
       if: env.CI == 'true' && env.ACT == 'true'
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
       run: |
         run_quiet() { local logfile="${RUNNER_TEMP}/command.log" ; "$@" > "$logfile" 2>&1 || { cat "$logfile" ; exit 1 ; } ; }
 
-        type -p curl >/dev/null || (apt update && apt install curl -y)
-        curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg -o /usr/share/keyrings/githubcli-archive-keyring.gpg
+        type -p curl >/dev/null || (apt update && apt install --yes curl)
+        curl --silent --show-error --fail --location \
+          --output /usr/share/keyrings/githubcli-archive-keyring.gpg \
+          https://cli.github.com/packages/githubcli-archive-keyring.gpg
         echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" > /etc/apt/sources.list.d/github-cli.list
         run_quiet apt update
-        run_quiet apt install -y gh
+        run_quiet apt install --yes gh
         gh --version
+
+        # Install latest yq
+        BINARY=yq_linux_amd64
+        VERSION="$(gh --repo=https://github.com/mikefarah/yq release list |awk '$2 == "Latest" { print $3 }')"
+        gh --repo=https://github.com/mikefarah/yq release download "$VERSION" --clobber --output /usr/bin/yq --pattern "$BINARY"
+        /bin/chmod 755 /usr/bin/yq
+        yq --version
 
     - name: Install hc-releases
       uses: ./
       id: install
       with:
         github-token: ${{ inputs.github-token || secrets.TOKEN_DOWNLOAD_RELAPI }}
-        version: ${{ inputs.version || matrix.version }}
+        version: ${{ matrix.version }}
 
-    - name: Report Version
+    - name: Test reported version
       run: |
-        echo "installed version: ${{ steps.install.outputs.version }}"
+        got_ver="${{ steps.install.outputs.version }}"
+        if [ -z "$got_ver" ]; then
+          echo "Failed to detect installed version: step output empty." 1>&2
+          exit 1
+        fi
+
+        exp_ver="${{ matrix.version }}"
+        if [ -z "$exp_ver" ]; then # default version according to action.yml
+          exp_ver="$(yq eval .inputs.version.default action.yml)"
+        fi
+        if [ -z "$exp_ver" ]; then
+          echo "Failed to determine expected version of hc-releases" 1>&2
+          exit 1
+        fi
+
+        if [ "v${got_ver#v}" != "v${exp_ver#v}" ]; then
+          echo "Incorrect hc-releases found (wrong version installed?  target version not first in PATH?)" 1>&2
+          exit 1
+        fi
