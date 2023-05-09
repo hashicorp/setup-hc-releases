@@ -1,6 +1,7 @@
 # Copyright (c) HashiCorp, Inc.
 # SPDX-License-Identifier: MPL-2.0
 
+---
 name: "Setup hc-releases"
 author: "HashiCorp"
 description: "Install hc-releases"
@@ -14,17 +15,23 @@ inputs:
     description: "GitHub token with release asset access to hc-releases."
     required: true
   version:
-    description: "Version of hc-releases to install."
-    required: false
-    default: "0.1.14"
-  version-checksum:
-    description: "Platform and version checksum of hc-releases to verify."
-    required: false
+    description: "Version of hc-releases to install, e.g. v0.1.10."
+    default: "v0.1.15"
+  install-dir:
+    description: "Where the tool will be installed; this directory will be added to GITHUB_PATH."
+    default: "$HOME/bin"
 
 outputs:
   version:
-    description: "Version of hc-releases installed."
+    description: "The version of hc-releases that was installed as reported by the tool"
+    value: ${{ steps.install.outputs.version }}
 
 runs:
-  using: "node12"
-  main: "dist/index.js"
+  using: composite
+  steps:
+    - name: Install hc-releases tool
+      id: install
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github-token }}
+      run: DEST_DIR="${HOME}/bin" "${GITHUB_ACTION_PATH}/scripts/setup-hc-releases.sh" "${{ inputs.version }}"
