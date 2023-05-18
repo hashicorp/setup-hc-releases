@@ -84,3 +84,10 @@ jobs:
           echo "Incorrect hc-releases found (wrong version installed?  target version not first in PATH?)" 1>&2
           exit 1
         fi
+
+    # test that a single job can call the action multiple times
+    - name: Install hc-releases again
+      uses: ./
+      with:
+        github-token: ${{ inputs.github-token || secrets.TOKEN_DOWNLOAD_RELAPI }}
+        version: ${{ matrix.version }}
