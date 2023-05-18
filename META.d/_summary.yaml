@@ -1,0 +1,7 @@
+---
+schema: 1.1
+summary:
+  owner: team-rel-eng
+  description: |
+    setup-hc-releases is a GitHub action used to install `hc-releases`, the CLI
+    component of the Releases API Service.
