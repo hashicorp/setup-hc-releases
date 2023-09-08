@@ -49,13 +49,6 @@ jobs:
         run_quiet apt install --yes gh
         gh --version
 
-        # Install latest yq
-        BINARY=yq_linux_amd64
-        VERSION="$(gh --repo=https://github.com/mikefarah/yq release list |awk '$2 == "Latest" { print $3 }')"
-        gh --repo=https://github.com/mikefarah/yq release download "$VERSION" --clobber --output /usr/bin/yq --pattern "$BINARY"
-        /bin/chmod 755 /usr/bin/yq
-        yq --version
-
     - name: Install hc-releases
       uses: ./
       id: install
@@ -64,6 +57,8 @@ jobs:
         version: ${{ matrix.version }}
 
     - name: Test reported version
+      env:
+        GH_TOKEN: ${{ inputs.github-token || secrets.TOKEN_DOWNLOAD_RELAPI }}
       run: |
         got_ver="${{ steps.install.outputs.version }}"
         if [ -z "$got_ver" ]; then
@@ -72,8 +67,9 @@ jobs:
         fi
 
         exp_ver="${{ matrix.version }}"
-        if [ -z "$exp_ver" ]; then # default version according to action.yml
-          exp_ver="$(yq eval .inputs.version.default action.yml)"
+        if [ -z "$exp_ver" ]; then # default version, same method used by action.yml
+          echo "Identifying latest release..."
+          exp_ver="$(gh release list --repo=hashicorp/releases-api | awk '$2 == "Latest" { print $3 }')"
         fi
         if [ -z "$exp_ver" ]; then
           echo "Failed to determine expected version of hc-releases" 1>&2

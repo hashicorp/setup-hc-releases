@@ -21,7 +21,7 @@ jobs:
 | Input              | Description                                               | Default                |
 | ------------------ | --------------------------------------------------------- | ---------------------- |
 | `github-token`     | GitHub token with release asset access to `hc-releases`.  |                        |
-| `version`          | Version of `hc-releases` to install.                      | `v0.1.15`              |
+| `version`          | Version of `hc-releases` to install.                      | Latest release         |
 
 ### Outputs
 
@@ -42,14 +42,10 @@ act --container-architecture=linux/amd64 --input github-token=$(gh auth token) w
 The default version is set to avoid failed workflows if a broken `hc-releases` is published
 but can be passed explicitly for testing.
 
-### Supporting a new version of hc-releases
+### Creating a Release
 
-1. Clone this repo
-1. Update the default release version of `hc-releases`
-   * [README](https://github.com/hashicorp/setup-hc-releases/blob/main/README.md) chart
-   * Input `version` in [action.yml](https://github.com/hashicorp/setup-hc-releases/blob/main/action.yml#L18)
-1. Commit your changes, open a PR, get it reviewed, and merge to `main`.
-1. Checkout the `main` branch and pull the latest changes.
+After your PR is merged to the default branch, `main`:
+1. Update locally: `git checkout main && git pull`
 1. Create a new tag for the release, e.g. `v2.0.1` with `git tag v2.0.1 && git push origin v2.0.1`.
-1. Delete the major version tag, e.g. `git tag -d v2 && git push origin :refs/tags/v2`
-1. Create a new major version tag, e.g. `git tag v2 && git push origin v2`
+1. Update the major version tag locally, e.g. `git tag -d v2 && git tag v2`
+1. Update the tag upstream, e.g. `git push origin :refs/tags/v2 && git push origin v2`
