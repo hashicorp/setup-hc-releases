@@ -15,8 +15,8 @@ inputs:
     description: "GitHub token with release asset access to hc-releases."
     required: true
   version:
-    description: "Version of hc-releases to install, e.g. v0.1.10."
-    default: "v0.1.15"
+    description: "Version of hc-releases to install, e.g. v0.1.10. (Defaults to latest release)"
+    default: ""
   install-dir:
     description: "Where the tool will be installed; this directory will be added to GITHUB_PATH."
     default: "$HOME/bin"

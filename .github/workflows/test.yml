@@ -31,7 +31,7 @@ jobs:
           - '${{ inputs.version }}'
           - '0.1.14' # need not be the most recent
     steps:
-    - uses: actions/checkout@8e5e7e5ab8b370d6c329ec480221332ada57f0ab # v3.5.2
+    - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9 # v3.5.3
 
     - name: "Install tools (only for running locally via act)"
       if: env.CI == 'true' && env.ACT == 'true'
@@ -49,13 +49,6 @@ jobs:
         run_quiet apt install --yes gh
         gh --version
 
-        # Install latest yq
-        BINARY=yq_linux_amd64
-        VERSION="$(gh --repo=https://github.com/mikefarah/yq release list |awk '$2 == "Latest" { print $3 }')"
-        gh --repo=https://github.com/mikefarah/yq release download "$VERSION" --clobber --output /usr/bin/yq --pattern "$BINARY"
-        /bin/chmod 755 /usr/bin/yq
-        yq --version
-
     - name: Install hc-releases
       uses: ./
       id: install
@@ -64,6 +57,8 @@ jobs:
         version: ${{ matrix.version }}
 
     - name: Test reported version
+      env:
+        GH_TOKEN: ${{ inputs.github-token || secrets.TOKEN_DOWNLOAD_RELAPI }}
       run: |
         got_ver="${{ steps.install.outputs.version }}"
         if [ -z "$got_ver" ]; then
@@ -72,8 +67,9 @@ jobs:
         fi
 
         exp_ver="${{ matrix.version }}"
-        if [ -z "$exp_ver" ]; then # default version according to action.yml
-          exp_ver="$(yq eval .inputs.version.default action.yml)"
+        if [ -z "$exp_ver" ]; then # default version, same method used by action.yml
+          echo "Identifying latest release..."
+          exp_ver="$(gh release list --repo=hashicorp/releases-api | awk '$2 == "Latest" { print $3 }')"
         fi
         if [ -z "$exp_ver" ]; then
           echo "Failed to determine expected version of hc-releases" 1>&2
