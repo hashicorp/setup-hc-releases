@@ -55,6 +55,7 @@ sums_name="hc-releases_${version}_SHA256SUMS"
 echo "Installing release $version"
 
 # download
+/bin/rm -vf "$sums_name" "hc-releases_${version}_${pattern}" # remove in case they already exist from previous invocation
 gh release download --repo=hashicorp/releases-api "$tag" --pattern "$sums_name"
 gh release download --repo=hashicorp/releases-api "$tag" --pattern "*$pattern"
 # verify checksum
