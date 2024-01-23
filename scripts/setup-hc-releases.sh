@@ -67,6 +67,9 @@ run_quiet unzip -o -d "$DEST_DIR" "hc-releases_${version}_$pattern"
 chmod 755 "${DEST_DIR}/hc-releases"
 echo "$DEST_DIR" >> "$GITHUB_PATH"
 
+# clean up downloads
+/bin/rm -vf "$sums_name" "hc-releases_${version}_${pattern}"
+
 # report version installed
 V="$("${DEST_DIR}/hc-releases" version)"
 echo "version=$V" >> "$GITHUB_OUTPUT"

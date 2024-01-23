@@ -1,4 +1,10 @@
-# v3.0.0
+# v2.1.3
+
+BUG FIXES
+
+- Remove downloaded hc-release assets after verification and install to prevent dirty workspace directory for subsequent actions
+
+# v2.0.0
 
 NOTES
 
