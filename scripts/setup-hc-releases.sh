@@ -55,7 +55,6 @@ sums_name="hc-releases_${version}_SHA256SUMS"
 echo "Installing release $version"
 
 # download
-/bin/rm -vf "$sums_name" "hc-releases_${version}_${pattern}" # remove in case they already exist from previous invocation
 gh release download --repo=hashicorp/releases-api "$tag" --pattern "$sums_name"
 gh release download --repo=hashicorp/releases-api "$tag" --pattern "*$pattern"
 # verify checksum
@@ -66,6 +65,9 @@ mkdir -p "$DEST_DIR"
 run_quiet unzip -o -d "$DEST_DIR" "hc-releases_${version}_$pattern"
 chmod 755 "${DEST_DIR}/hc-releases"
 echo "$DEST_DIR" >> "$GITHUB_PATH"
+
+# clean up downloads
+/bin/rm -vf "$sums_name" "hc-releases_${version}_${pattern}"
 
 # report version installed
 V="$("${DEST_DIR}/hc-releases" version)"
