@@ -3,8 +3,10 @@
 
 ---
 schema: 1.1
+partition: release-engineering
+category: github-action
 summary:
-  owner: team-rel-eng
+  owner: team-selfmanaged-releng
   description: |
     setup-hc-releases is a GitHub action used to install `hc-releases`, the CLI
     component of the Releases API Service.
