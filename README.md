@@ -29,6 +29,50 @@ jobs:
 | --------- | ----------------------------------- |
 | `version` | Version of `hc-releases` installed. |
 
+## Token expiry alerts
+
+The [Token Expiry Alerts workflow](.github/workflows/token-expiry-alert.yml)
+checks `TOKEN_DOWNLOAD_RELAPI` daily at 02:30 UTC / 08:00 IST. It also supports
+manual runs via `workflow_dispatch` once merged into the default branch.
+The existing release-download behavior is unchanged.
+
+Both credentials come directly from GitHub Actions secrets; no Vault access is
+used. Ensure these repository or repository-accessible organization secrets exist:
+
+- `TOKEN_DOWNLOAD_RELAPI`: the GitHub personal access token to monitor, already
+  used by the testing workflow to download releases.
+- `slack_token`: a Slack bot token with `chat:write` permission. Invite the bot to
+  both destination channels.
+
+Alert routing matches [hashicorp/github-release-sync#72](https://github.com/hashicorp/github-release-sync/pull/72):
+
+- At 30 days or less remaining: notify `#feed-selfmanaged-releng-alerts`.
+- At 7 days or less remaining: also notify `#team-selfmanaged-releng`, mentioning
+  Gokul (`U09DES9DUGH`) and `@selfmanaged-releng-oncall` (`S09KC1UH2QL`).
+- Expired tokens alert both channels. HTTP 401 alerts both channels as expired,
+  revoked, or invalid, and fails the workflow.
+
+The check authenticates to `https://api.github.com/user` and reads the
+`GitHub-Authentication-Token-Expiration` response header. GitHub's secrets API
+cannot retrieve stored secret values or their expiry; credentials are injected
+using the Actions `secrets` context instead. If GitHub omits the expiry header,
+the workflow emits a warning without guessing an expiry or sending an alert.
+Confirm the token's expiry policy in GitHub in this case.
+
+Each qualifying run sends new messages identifying the repository, secret, expiry,
+and workflow run, never credential values. Missing configuration, malformed expiry
+dates, API/network errors, and Slack delivery failures fail the workflow; monitor
+failed runs as well as Slack. Requests time out after 30 seconds. Urgent delivery
+is still attempted if feed delivery fails. Failed requests are not automatically
+retried; investigate and rerun.
+
+Dependency-free tests run in CI without credentials or live API calls. To run them
+locally with Node.js 24:
+
+```sh
+node --test .github/scripts/github-token-expiry-alert.test.mjs
+```
+
 ## Development
 
 Test locally with [act](https://github.com/nektos/act).  You'll need a GitHub
