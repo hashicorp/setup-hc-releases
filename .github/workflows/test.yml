@@ -22,6 +22,18 @@ defaults:
     shell: bash
 
 jobs:
+  token-expiry:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: "24"
+      - name: Test token expiry alerts without credentials or live API calls
+        run: node --test .github/scripts/github-token-expiry-alert.test.mjs
+
   unit:
     runs-on: ubuntu-latest
     # TODO test on all supported platforms (need GH-hosted darwin runners)
