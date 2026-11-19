@@ -49,3 +49,4 @@ After your PR is merged to the default branch, `main`:
 1. Create a new tag for the release, e.g. `v2.0.1` with `git tag v2.0.1 && git push origin v2.0.1`.
 1. Update the major version tag locally, e.g. `git tag -d v2 && git tag v2`
 1. Update the tag upstream, e.g. `git push origin :refs/tags/v2 && git push origin v2`
+ 
